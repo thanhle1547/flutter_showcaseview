@@ -359,20 +359,50 @@ class _ShowcaseState extends State<Showcase> {
   bool _enableShowcase = true;
   Timer? timer;
   GetPosition? position;
+  Size? rootWidgetSize;
+  RenderObject? rootRenderObject;
 
   ShowCaseWidgetState get showCaseWidgetState => ShowCaseWidget.of(context);
+
+  @override
+  void initState() {
+    super.initState();
+    initRootWidget();
+  }
+
+  void initRootWidget() {
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
+      rootWidgetSize = showCaseWidgetState.rootWidgetSize;
+      rootRenderObject = showCaseWidgetState.rootRenderObject;
+    });
+  }
+
+  void reCalculateRoot() {
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
+      final rootWidget =
+          context.findRootAncestorStateOfType<State<WidgetsApp>>();
+      rootRenderObject = rootWidget?.context.findRenderObject();
+      rootWidgetSize = rootWidget == null
+          ? MediaQuery.of(context).size
+          : (rootRenderObject as RenderBox).size;
+    });
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _enableShowcase = showCaseWidgetState.enableShowcase;
 
+    reCalculateRoot();
+
     if (_enableShowcase) {
+      final size = MediaQuery.of(context).size;
       position ??= GetPosition(
+        rootRenderObject: rootRenderObject,
         key: widget.key,
         padding: widget.targetPadding,
-        screenWidth: MediaQuery.of(context).size.width,
-        screenHeight: MediaQuery.of(context).size.height,
+        screenWidth: rootWidgetSize?.width ?? size.width,
+        screenHeight: rootWidgetSize?.height ?? size.height,
       );
       showOverlay();
     }
@@ -414,15 +444,23 @@ class _ShowcaseState extends State<Showcase> {
   Widget build(BuildContext context) {
     if (_enableShowcase) {
       return AnchoredOverlay(
+        key: showCaseWidgetState.anchoredOverlayKey,
+        rootRenderObject: rootRenderObject,
         overlayBuilder: (context, rectBound, offset) {
-          final size = MediaQuery.of(context).size;
+          final size = rootWidgetSize ?? MediaQuery.of(context).size;
           position = GetPosition(
+            rootRenderObject: rootRenderObject,
             key: widget.key,
             padding: widget.targetPadding,
             screenWidth: size.width,
             screenHeight: size.height,
           );
-          return buildOverlayOnTarget(offset, rectBound.size, rectBound, size);
+          return buildOverlayOnTarget(
+            offset,
+            rectBound.size,
+            rectBound,
+            size,
+          );
         },
         showOverlay: true,
         child: widget.child,
@@ -476,6 +514,7 @@ class _ShowcaseState extends State<Showcase> {
     Rect rectBound,
     Size screenSize,
   ) {
+    final mediaQuerySize = MediaQuery.of(context).size;
     var blur = 0.0;
     if (_showShowCase) {
       blur = widget.blurValue ?? showCaseWidgetState.blurValue;
@@ -510,8 +549,8 @@ class _ShowcaseState extends State<Showcase> {
                 ? BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                      width: mediaQuerySize.width,
+                      height: mediaQuerySize.height,
                       decoration: BoxDecoration(
                         color: widget.overlayColor
                             .withOpacity(widget.overlayOpacity),
@@ -519,8 +558,8 @@ class _ShowcaseState extends State<Showcase> {
                     ),
                   )
                 : Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: mediaQuerySize.width,
+                    height: mediaQuerySize.height,
                     decoration: BoxDecoration(
                       color: widget.overlayColor
                           .withOpacity(widget.overlayOpacity),

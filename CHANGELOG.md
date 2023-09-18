@@ -1,3 +1,7 @@
+## [2.0.4] (Un-Released)
+- Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).
+- Fixed [#383](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/383) - Targeted widget focusing issue when we applying size constraint on root widget(MaterialApp).
+
 ## [2.0.3]
 - Feature [#148](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/148) - Add feasibility to add `textDirection` of `title` and `description`.
 - Feature [#272](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/272) - Add barrier click callback.
@@ -83,7 +87,7 @@
 
 ## [1.0.0]
 
-- Fixed [#95](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/95) - Migrated to null safety.  
+- Fixed [#95](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/95) - Migrated to null safety.
 - Fixed [#74](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/74) - Long text description is hidden.
 - Fixed [#76](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/76) - Overlay is not displayed properly on web.
 - Fixed [#81](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/81) - Crash on hot reload.
