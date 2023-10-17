@@ -25,9 +25,10 @@ import 'package:flutter/material.dart';
 class GetPosition {
   GetPosition({
     required this.key,
+    this.padding = EdgeInsets.zero,
     required this.screenWidth,
     required this.screenHeight,
-    this.padding = EdgeInsets.zero,
+    this.rootRenderObject,
   }) {
     getRenderBox();
   }
@@ -36,6 +37,7 @@ class GetPosition {
   final EdgeInsets padding;
   final double screenWidth;
   final double screenHeight;
+  final RenderObject? rootRenderObject;
 
   late final RenderBox? _box;
   late final Offset? _boxOffset;
@@ -44,7 +46,7 @@ class GetPosition {
     var renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       _box = renderBox;
-      _boxOffset = _box?.localToGlobal(Offset.zero);
+      _boxOffset = _box?.localToGlobal(Offset.zero, ancestor: rootRenderObject);
     }
   }
 
