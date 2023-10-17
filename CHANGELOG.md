@@ -1,3 +1,6 @@
+## [2.1.0] (Un-Released)
+- Added support of custom arrow painter.
+
 ## [2.0.4] (Un-Released)
 - Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).
 - Fixed [#383](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/383) - Targeted widget focusing issue when we applying size constraint on root widget(MaterialApp).

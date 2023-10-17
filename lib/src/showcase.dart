@@ -119,6 +119,9 @@ class Showcase extends StatefulWidget {
   /// Default to `true`
   final bool showArrow;
 
+  /// Custom arrow painter
+  final ArrowPainterBuilder? arrowPainterBuilder;
+
   /// Height of [container]
   final double? height;
 
@@ -264,6 +267,7 @@ class Showcase extends StatefulWidget {
       valueColor: AlwaysStoppedAnimation(Colors.white),
     ),
     this.showArrow = true,
+    this.arrowPainterBuilder,
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -304,6 +308,7 @@ class Showcase extends StatefulWidget {
     required this.width,
     required this.container,
     required this.child,
+    this.arrowPainterBuilder,
     this.targetShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(8),
@@ -590,6 +595,7 @@ class _ShowcaseState extends State<Showcase> {
             titleTextStyle: widget.titleTextStyle,
             descTextStyle: widget.descTextStyle,
             container: widget.container,
+            arrowPainterBuilder: widget.arrowPainterBuilder,
             tooltipBackgroundColor: widget.tooltipBackgroundColor,
             textColor: widget.textColor,
             showArrow: widget.showArrow,
