@@ -1,5 +1,6 @@
 ## [2.1.0] (Un-Released)
 - Added support of custom arrow painter.
+- Added support of custom container margin.
 
 ## [2.0.4] (Un-Released)
 - Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).

@@ -68,8 +68,7 @@ class _MailPageState extends State<MailPage> {
     //NOTE: remove ambiguate function if you are using
     //flutter version greater than 3.x and direct use WidgetsBinding.instance
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context)
-          .startShowCase([_one, _two, _three, _four, _five]),
+      (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]),
     );
     mails = [
       Mail(
@@ -182,11 +181,9 @@ class _MailPageState extends State<MailPage> {
                                       key: _one,
                                       description: 'Tap to see menu options',
                                       disableDefaultTargetGestures: true,
-                                      onBarrierClick: () =>
-                                          debugPrint('Barrier clicked'),
+                                      onBarrierClick: () => debugPrint('Barrier clicked'),
                                       child: GestureDetector(
-                                        onTap: () =>
-                                            debugPrint('menu button clicked'),
+                                        onTap: () => debugPrint('menu button clicked'),
                                         child: Icon(
                                           Icons.menu,
                                           color: Theme.of(context).primaryColor,
@@ -289,8 +286,7 @@ class _MailPageState extends State<MailPage> {
                * currently rendered so the showcased keys are available in the
                * render tree. */
               scrollController.jumpTo(0);
-              ShowCaseWidget.of(context)
-                  .startShowCase([_one, _two, _three, _four, _five]);
+              ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]);
             });
           },
           child: const Icon(
@@ -301,8 +297,8 @@ class _MailPageState extends State<MailPage> {
     );
   }
 
-  GestureDetector showcaseMailTile(GlobalKey<State<StatefulWidget>> key,
-      bool showCaseDetail, BuildContext context, Mail mail) {
+  GestureDetector showcaseMailTile(
+      GlobalKey<State<StatefulWidget>> key, bool showCaseDetail, BuildContext context, Mail mail) {
     return GestureDetector(
       onTap: () {
         Navigator.push<void>(
@@ -389,12 +385,7 @@ class Mail {
 }
 
 class MailTile extends StatelessWidget {
-  const MailTile(
-      {required this.mail,
-      this.showCaseDetail = false,
-      this.showCaseKey,
-      Key? key})
-      : super(key: key);
+  const MailTile({required this.mail, this.showCaseDetail = false, this.showCaseKey, Key? key}) : super(key: key);
   final bool showCaseDetail;
   final GlobalKey<State<StatefulWidget>>? showCaseKey;
   final Mail mail;
@@ -450,6 +441,10 @@ class MailTile extends StatelessWidget {
                         )
                       ],
                     ),
+                    containerMargin: const EdgeInsets.only(
+                      left: 16,
+                      top: -16,
+                    ),
                     child: const SAvatarExampleChild(),
                   )
                 else
@@ -463,9 +458,7 @@ class MailTile extends StatelessWidget {
                         mail.sender,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontWeight: mail.isUnread
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight: mail.isUnread ? FontWeight.bold : FontWeight.normal,
                           fontSize: 17,
                         ),
                       ),
@@ -482,9 +475,7 @@ class MailTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          color: mail.isUnread
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
+                          color: mail.isUnread ? Theme.of(context).primaryColor : Colors.black,
                           fontSize: 15,
                         ),
                       ),

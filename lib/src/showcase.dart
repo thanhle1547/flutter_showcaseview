@@ -86,6 +86,8 @@ class Showcase extends StatefulWidget {
   /// ```
   final EdgeInsets tooltipPadding;
 
+  final EdgeInsets containerMargin;
+
   /// Background color of overlay during showcase.
   ///
   /// Default value is [Colors.black45]
@@ -295,6 +297,7 @@ class Showcase extends StatefulWidget {
   })  : height = null,
         width = null,
         container = null,
+        containerMargin = EdgeInsets.zero,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
             "overlay opacity must be between 0 and 1."),
         assert(onTargetClick == null || disposeOnTap != null,
@@ -307,6 +310,12 @@ class Showcase extends StatefulWidget {
     required this.height,
     required this.width,
     required this.container,
+    this.containerMargin = const EdgeInsets.only(
+      left: 16,
+      right: 8,
+      top: 10,
+      bottom: 10,
+    ),
     required this.child,
     this.arrowPainterBuilder,
     this.targetShapeBorder = const RoundedRectangleBorder(
@@ -595,6 +604,7 @@ class _ShowcaseState extends State<Showcase> {
             titleTextStyle: widget.titleTextStyle,
             descTextStyle: widget.descTextStyle,
             container: widget.container,
+            containerMargin: widget.containerMargin,
             arrowPainterBuilder: widget.arrowPainterBuilder,
             tooltipBackgroundColor: widget.tooltipBackgroundColor,
             textColor: widget.textColor,

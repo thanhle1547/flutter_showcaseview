@@ -44,6 +44,7 @@ class ToolTipWidget extends StatefulWidget {
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
   final Widget? container;
+  final EdgeInsets containerMargin;
   final Color? tooltipBackgroundColor;
   final Color? textColor;
   final bool showArrow;
@@ -77,6 +78,12 @@ class ToolTipWidget extends StatefulWidget {
     required this.titleTextStyle,
     required this.descTextStyle,
     required this.container,
+    this.containerMargin = const EdgeInsets.only(
+      left: 16,
+      right: 8,
+      top: 10,
+      bottom: 10,
+    ),
     required this.tooltipBackgroundColor,
     required this.textColor,
     required this.showArrow,
@@ -196,14 +203,22 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
     return null;
   }
 
-  double _getSpace() {
+  double _getHorizontalSpace() {
     var space = widget.position!.getCenter() - (widget.contentWidth! / 2);
     if (space + widget.contentWidth! > widget.screenSize.width) {
-      space = widget.screenSize.width - widget.contentWidth! - 8;
+      space = widget.screenSize.width - widget.contentWidth! - widget.containerMargin.right;
     } else if (space < (widget.contentWidth! / 2)) {
-      space = 16;
+      space = widget.containerMargin.left;
     }
     return space;
+  }
+
+  double _getVerticalSpace(double contentY, bool isArrowUp) {
+    if (isArrowUp) {
+      return contentY - widget.containerMargin.top;
+    } else {
+      return contentY - widget.containerMargin.bottom;
+    }
   }
 
   double _getAlignmentX() {
@@ -456,8 +471,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
     return Stack(
       children: <Widget>[
         Positioned(
-          left: _getSpace(),
-          top: contentY - 10,
+          left: _getHorizontalSpace(),
+          top: _getVerticalSpace(contentY, isArrowUp),
           child: FractionalTranslation(
             translation: Offset(0.0, contentFractionalOffset as double),
             child: SlideTransition(
@@ -514,8 +529,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
 
   double? _getArrowRight(double arrowWidth) {
     if (_getLeft() != null) return null;
-    return (widget.screenSize.width - widget.position!.getCenter()) -
-        (_getRight() ?? 0) -
-        (arrowWidth / 2);
+    return (widget.screenSize.width - widget.position!.getCenter()) - (_getRight() ?? 0) - (arrowWidth / 2);
   }
 }
