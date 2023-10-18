@@ -159,7 +159,7 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
       final rootWidget = context.findAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject();
       rootWidgetSize = rootWidget == null
-          ? MediaQuery.of(context).size
+          ? MediaQuery.sizeOf(context)
           : (rootRenderObject as RenderBox).size;
       anchoredOverlayKey = UniqueKey();
     });
