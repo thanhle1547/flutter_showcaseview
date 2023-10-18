@@ -397,7 +397,7 @@ class _ShowcaseState extends State<Showcase> {
           context.findRootAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject();
       rootWidgetSize = rootWidget == null
-          ? MediaQuery.of(context).size
+          ? MediaQuery.sizeOf(context)
           : (rootRenderObject as RenderBox).size;
     });
   }
@@ -410,7 +410,7 @@ class _ShowcaseState extends State<Showcase> {
     reCalculateRoot();
 
     if (_enableShowcase) {
-      final size = MediaQuery.of(context).size;
+      final size = MediaQuery.sizeOf(context);
       position ??= GetPosition(
         rootRenderObject: rootRenderObject,
         key: widget.key,
@@ -461,7 +461,7 @@ class _ShowcaseState extends State<Showcase> {
         key: showCaseWidgetState.anchoredOverlayKey,
         rootRenderObject: rootRenderObject,
         overlayBuilder: (context, rectBound, offset) {
-          final size = rootWidgetSize ?? MediaQuery.of(context).size;
+          final size = rootWidgetSize ?? MediaQuery.sizeOf(context);
           position = GetPosition(
             rootRenderObject: rootRenderObject,
             key: widget.key,
@@ -528,7 +528,7 @@ class _ShowcaseState extends State<Showcase> {
     Rect rectBound,
     Size screenSize,
   ) {
-    final mediaQuerySize = MediaQuery.of(context).size;
+    final mediaQuerySize = MediaQuery.sizeOf(context);
     var blur = 0.0;
     if (_showShowCase) {
       blur = widget.blurValue ?? showCaseWidgetState.blurValue;
