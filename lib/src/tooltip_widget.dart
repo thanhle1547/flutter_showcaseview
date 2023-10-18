@@ -825,7 +825,8 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
           Positioned(
             left: arrowLeftPosition,
             right: arrowRightPosition,
-            top: -arrowPainter.height,
+            top: isArrowUp ? -arrowPainter.height : null,
+            bottom: isArrowUp ? null : -arrowPainter.height,
             child: CustomPaint(
               painter: arrowPainter,
               child: SizedBox(
@@ -857,7 +858,10 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
                 child: GestureDetector(
                   onTap: widget.onTooltipTap,
                   child: Container(
-                    padding: EdgeInsets.only(top: paddingTop),
+                    padding: EdgeInsets.only(
+                      top: isArrowUp ? paddingTop : 0,
+                      bottom: isArrowUp ? 0 : paddingBottom,
+                    ),
                     color: Colors.transparent,
                     child: Center(
                       child: MeasureSize(
