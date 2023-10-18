@@ -593,7 +593,7 @@ class _ShowcaseState extends State<Showcase> {
             shapeBorder: widget.targetShapeBorder,
             disableDefaultChildGestures: widget.disableDefaultTargetGestures,
           ),
-          ToolTipWidget(
+          ToolTipBaseWidget.resolve(
             position: position,
             offset: offset,
             screenSize: screenSize,
