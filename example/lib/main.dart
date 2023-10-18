@@ -282,6 +282,7 @@ class _MailPageState extends State<MailPage> {
         description: 'Click here to compose mail',
         targetShapeBorder: const CircleBorder(),
         disableMovingAnimation: true,
+        arrowVerticalMargin: const EdgeInsets.only(bottom: 9),
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
@@ -415,6 +416,7 @@ class MailTile extends StatelessWidget {
                     targetBorderRadius: const BorderRadius.all(
                       Radius.circular(150),
                     ),
+                    arrowVerticalMargin: const EdgeInsets.only(top: 10),
                     arrowPainterBuilder: (_) => CustomArrowPainer(const Color(0xffFCD8DC)),
                     container: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,7 @@
 ## [2.1.0] (Un-Released)
 - Added support of change/add arrow painter for both default and custom tooltip.
 - Added support for changing the horizontal padding of the tooltip from the parent (margin).
+- Added support for changing the vertical margin of the arrow.
 - Added support of custom container margin.
 - Added support of custom the bounding box of the overlay that gets clipped.
 
