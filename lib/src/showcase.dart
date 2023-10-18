@@ -162,6 +162,9 @@ class Showcase extends StatefulWidget {
   /// Default to `false`
   final bool? disableScaleAnimation;
 
+  /// Custom the bounding box of the overlay that gets clipped
+  final GlobalKey? visibleBoundReference;
+
   /// Padding around target widget
   ///
   /// Default to [EdgeInsets.zero]
@@ -278,6 +281,7 @@ class Showcase extends StatefulWidget {
     this.tooltipPadding =
         const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
+    this.visibleBoundReference,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
     this.targetBorderRadius,
@@ -332,6 +336,7 @@ class Showcase extends StatefulWidget {
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
+    this.visibleBoundReference,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
     this.onTargetLongPress,
@@ -460,7 +465,8 @@ class _ShowcaseState extends State<Showcase> {
       return AnchoredOverlay(
         key: showCaseWidgetState.anchoredOverlayKey,
         rootRenderObject: rootRenderObject,
-        overlayBuilder: (context, rectBound, offset) {
+        containerKey: widget.visibleBoundReference,
+        overlayBuilder: (context, containerBounds, rectBound, offset) {
           final size = rootWidgetSize ?? MediaQuery.sizeOf(context);
           position = GetPosition(
             rootRenderObject: rootRenderObject,
@@ -472,7 +478,7 @@ class _ShowcaseState extends State<Showcase> {
           return buildOverlayOnTarget(
             offset,
             rectBound.size,
-            rectBound,
+            containerBounds,
             size,
           );
         },
@@ -523,9 +529,9 @@ class _ShowcaseState extends State<Showcase> {
   }
 
   Widget buildOverlayOnTarget(
-    Offset offset,
-    Size size,
-    Rect rectBound,
+    Offset targetOffset,
+    Size targetSize,
+    Rect clipRectBound,
     Size screenSize,
   ) {
     final mediaQuerySize = MediaQuery.sizeOf(context);
@@ -551,7 +557,7 @@ class _ShowcaseState extends State<Showcase> {
           },
           child: ClipPath(
             clipper: RRectClipper(
-              area: _isScrollRunning ? Rect.zero : rectBound,
+              area: _isScrollRunning ? Rect.zero : clipRectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
               radius: _isScrollRunning
                   ? BorderRadius.zero
@@ -584,8 +590,8 @@ class _ShowcaseState extends State<Showcase> {
         if (_isScrollRunning) Center(child: widget.scrollLoadingWidget),
         if (!_isScrollRunning) ...[
           _TargetWidget(
-            offset: offset,
-            size: size,
+            offset: targetOffset,
+            size: targetSize,
             onTap: _getOnTargetTap,
             radius: widget.targetBorderRadius,
             onDoubleTap: widget.onTargetDoubleTap,
@@ -595,7 +601,7 @@ class _ShowcaseState extends State<Showcase> {
           ),
           ToolTipBaseWidget.resolve(
             position: position,
-            offset: offset,
+            offset: targetOffset,
             screenSize: screenSize,
             title: widget.title,
             titleAlignment: widget.titleAlignment,
