@@ -39,6 +39,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
   final Offset offset;
   final Size screenSize;
   final bool showArrow;
+  final EdgeInsets arrowVerticalMargin;
   final ArrowPainterBuilder? arrowPainterBuilder;
   final VoidCallback? onTooltipTap;
   final Duration movingAnimationDuration;
@@ -56,6 +57,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     required this.offset,
     required this.screenSize,
     required this.showArrow,
+    required this.arrowVerticalMargin,
     this.arrowPainterBuilder,
     this.onTooltipTap,
     required this.movingAnimationDuration,
@@ -84,6 +86,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     EdgeInsets? tooltipPadding,
     BorderRadius? tooltipBorderRadius,
     required bool showArrow,
+    required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
     VoidCallback? onTooltipTap,
     required Duration movingAnimationDuration,
@@ -113,6 +116,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     Color? tooltipBackgroundColor,
     Color? textColor,
     required bool showArrow,
+    required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
     Widget? container,
     double? contentHeight,
@@ -142,6 +146,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
         offset: offset,
         screenSize: screenSize,
         showArrow: showArrow,
+        arrowVerticalMargin: arrowVerticalMargin,
         arrowPainterBuilder: arrowPainterBuilder,
         container: container,
         horizontalPaddingFromParent: horizontalPaddingFromParent,
@@ -176,6 +181,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
       tooltipPadding: tooltipPadding,
       tooltipBorderRadius: tooltipBorderRadius,
       showArrow: showArrow,
+      arrowVerticalMargin: arrowVerticalMargin,
       arrowPainterBuilder: arrowPainterBuilder,
       onTooltipTap: onTooltipTap,
       movingAnimationDuration: movingAnimationDuration,
@@ -198,6 +204,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     required Offset offset,
     required Size screenSize,
     required bool showArrow,
+    required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
     required EdgeInsets horizontalPaddingFromParent,
     required Widget container,
@@ -244,12 +251,12 @@ mixin _ToolTipMixin<T extends ToolTipBaseWidget> on State<T>, TickerProviderStat
 
     contentFractionalOffset = contentOffsetMultiplier.clamp(-1.0, 0.0);
 
-    paddingTop = isArrowUp ? 22.0 : 0.0;
-    paddingBottom = isArrowUp ? 0.0 : 27.0;
-
     if (!widget.showArrow) {
-      paddingTop = 10;
-      paddingBottom = 10;
+      paddingTop = widget.arrowVerticalMargin.top;
+      paddingBottom = widget.arrowVerticalMargin.bottom;
+    } else {
+      paddingTop = isArrowUp ? widget.arrowVerticalMargin.top : 0.0;
+      paddingBottom = isArrowUp ? 0.0 : widget.arrowVerticalMargin.bottom;
     }
   }
 
@@ -422,6 +429,7 @@ class _DefaultToolTipWidget extends ToolTipBaseWidget {
     this.tooltipPadding,
     this.tooltipBorderRadius,
     required bool showArrow,
+    required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
     VoidCallback? onTooltipTap,
     required Duration movingAnimationDuration,
@@ -441,6 +449,7 @@ class _DefaultToolTipWidget extends ToolTipBaseWidget {
           offset: offset,
           screenSize: screenSize,
           showArrow: showArrow,
+          arrowVerticalMargin: arrowVerticalMargin,
           horizontalPaddingFromParent: horizontalPaddingFromParent,
           arrowPainterBuilder: arrowPainterBuilder,
           onTooltipTap: onTooltipTap,
@@ -644,10 +653,38 @@ class __DefaultToolTipWidgetState extends State<_DefaultToolTipWidget>
     );
 
     if (widget.showArrow) {
+      // The height of the arrow when it is in the up direction
+      final double upDelta = isArrowUp ? arrowPainter.height : 0;
+      double paddingTop = this.paddingTop - upDelta;
+
+      assert(
+        paddingTop.isNegative == false,
+        "arrowVerticalMargin(top: $paddingTop) which is less than "
+        "${isArrowUp ? 'arrow(height: $upDelta)' : 0}. "
+        "In release mode, paddingTop will be $upDelta",
+      );
+      if (paddingTop.isNegative) {
+        paddingTop = upDelta;
+      }
+
+      // The height of the arrow when it is in the down direction
+      final double bottomDelta = isArrowUp ? 0 : arrowPainter.height;
+      double paddingBottom = this.paddingBottom - bottomDelta;
+
+      assert(
+        paddingBottom.isNegative == false,
+        "arrowVerticalMargin(bottom: $paddingBottom) which is less than "
+        "${isArrowUp ? 0 : 'the arrow(height: $bottomDelta)'}. "
+        "In release mode, paddingBottom will be $bottomDelta",
+      );
+      if (paddingBottom.isNegative) {
+        paddingBottom = bottomDelta;
+      }
+
       current = Padding(
         padding: EdgeInsets.only(
-          top: paddingTop - (isArrowUp ? arrowPainter.height : 0),
-          bottom: paddingBottom - (isArrowUp ? 0 : arrowPainter.height),
+          top: paddingTop,
+          bottom: paddingBottom,
         ),
         child: current,
       );
@@ -688,6 +725,7 @@ class _CustomToolTipWidget extends ToolTipBaseWidget {
     required Offset offset,
     required Size screenSize,
     required bool showArrow,
+    required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
     EdgeInsets horizontalPaddingFromParent = const EdgeInsets.only(
       left: 16,
@@ -711,6 +749,7 @@ class _CustomToolTipWidget extends ToolTipBaseWidget {
           offset: offset,
           screenSize: screenSize,
           showArrow: showArrow,
+          arrowVerticalMargin: arrowVerticalMargin,
           arrowPainterBuilder: arrowPainterBuilder,
           horizontalPaddingFromParent: horizontalPaddingFromParent,
           onTooltipTap: onTooltipTap,

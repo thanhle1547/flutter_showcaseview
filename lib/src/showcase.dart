@@ -121,6 +121,8 @@ class Showcase extends StatefulWidget {
   /// Default to `true`
   final bool showArrow;
 
+  final EdgeInsets arrowVerticalMargin;
+
   /// Custom arrow painter
   final ArrowPainterBuilder? arrowPainterBuilder;
 
@@ -272,6 +274,7 @@ class Showcase extends StatefulWidget {
       valueColor: AlwaysStoppedAnimation(Colors.white),
     ),
     this.showArrow = true,
+    EdgeInsets? arrowVerticalMargin,
     this.arrowPainterBuilder,
     this.onTargetClick,
     this.disposeOnTap,
@@ -302,6 +305,10 @@ class Showcase extends StatefulWidget {
   })  : height = null,
         width = null,
         container = null,
+        arrowVerticalMargin = !showArrow
+            ? EdgeInsets.zero
+            : arrowVerticalMargin ??
+                (showArrow ? const EdgeInsets.only(top: 22, bottom: 27) : const EdgeInsets.symmetric(vertical: 10)),
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
             "overlay opacity must be between 0 and 1."),
         assert(onTargetClick == null || disposeOnTap != null,
@@ -321,6 +328,7 @@ class Showcase extends StatefulWidget {
       bottom: 10,
     ),
     required this.child,
+    this.arrowVerticalMargin = const EdgeInsets.symmetric(vertical: 10),
     this.arrowPainterBuilder,
     this.targetShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
@@ -615,6 +623,7 @@ class _ShowcaseState extends State<Showcase> {
             tooltipBackgroundColor: widget.tooltipBackgroundColor,
             textColor: widget.textColor,
             showArrow: widget.showArrow,
+            arrowVerticalMargin: widget.arrowVerticalMargin,
             contentHeight: widget.height,
             contentWidth: widget.width,
             onTooltipTap: _getOnTooltipTap,
