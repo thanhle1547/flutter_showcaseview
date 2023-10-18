@@ -52,6 +52,7 @@ class MailPage extends StatefulWidget {
 }
 
 class _MailPageState extends State<MailPage> {
+  final GlobalKey _searchKey = GlobalKey();
   final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
   final GlobalKey _three = GlobalKey();
@@ -160,9 +161,10 @@ class _MailPageState extends State<MailPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
+                      child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 8),
                         child: Container(
+                          key: _searchKey,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: const Color(0xffF9F9F9),
@@ -179,8 +181,9 @@ class _MailPageState extends State<MailPage> {
                                   children: <Widget>[
                                     Showcase(
                                       key: _one,
-                                      description: 'Tap to see menu options',
+                                      description: 'Tap ≡ to see menu options',
                                       disableDefaultTargetGestures: true,
+                                      visibleBoundReference: _searchKey,
                                       onBarrierClick: () => debugPrint('Barrier clicked'),
                                       child: GestureDetector(
                                         onTap: () => debugPrint('menu button clicked'),
