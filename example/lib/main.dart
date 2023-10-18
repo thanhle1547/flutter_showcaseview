@@ -281,6 +281,7 @@ class _MailPageState extends State<MailPage> {
         title: 'Compose Mail',
         description: 'Click here to compose mail',
         targetShapeBorder: const CircleBorder(),
+        disableMovingAnimation: true,
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
@@ -414,6 +415,7 @@ class MailTile extends StatelessWidget {
                     targetBorderRadius: const BorderRadius.all(
                       Radius.circular(150),
                     ),
+                    arrowPainterBuilder: (_) => CustomArrowPainer(const Color(0xffFCD8DC)),
                     container: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -444,7 +446,7 @@ class MailTile extends StatelessWidget {
                         )
                       ],
                     ),
-                    containerMargin: const EdgeInsets.only(
+                    horizontalPaddingFromParent: const EdgeInsets.only(
                       left: 16,
                       top: -16,
                     ),
@@ -516,5 +518,27 @@ class MailTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CustomArrowPainer extends ArrowPainter {
+  CustomArrowPainer(Color strokeColor)
+      : super(
+          strokeColor: strokeColor,
+          strokeWidth: 24,
+          paintingStyle: PaintingStyle.fill,
+          isUpArrow: true,
+          width: 24,
+          height: 24,
+        );
+
+  @override
+  Path getTrianglePath(double x, double y) {
+    return Path()
+      ..moveTo(x * 0.5, y * 0.08333333)
+      ..lineTo(x * 0.7916667, y * 0.8750000)
+      ..lineTo(x * 0.5000000, y * 0.7083333)
+      ..lineTo(x * 0.2083333, y * 0.8750000)
+      ..lineTo(x * 0.5000000, y * 0.08333333);
   }
 }
