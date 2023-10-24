@@ -138,7 +138,7 @@ class Showcase extends StatefulWidget {
   final Duration movingAnimationDuration;
 
   /// Triggered when default tooltip is tapped
-  final VoidCallback? onToolTipClick;
+  final VoidCallback? onTooltipClick;
 
   /// Triggered when showcased target widget is tapped
   ///
@@ -283,7 +283,7 @@ class Showcase extends StatefulWidget {
     this.disableScaleAnimation,
     this.horizontalPaddingFromParent = const EdgeInsets.symmetric(horizontal: 14),
     this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-    this.onToolTipClick,
+    this.onTooltipClick,
     this.visibleBoundReference,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -348,7 +348,7 @@ class Showcase extends StatefulWidget {
     this.tooltipPosition,
     this.onBarrierClick,
   })  : showArrow = arrowPainterBuilder != null,
-        onToolTipClick = null,
+        onTooltipClick = null,
         scaleAnimationDuration = const Duration(milliseconds: 300),
         scaleAnimationCurve = Curves.decelerate,
         scaleAnimationAlignment = null,
@@ -524,7 +524,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
       await _reverseAnimateTooltip();
       showCaseWidgetState.dismiss();
     }
-    widget.onToolTipClick?.call();
+    widget.onTooltipClick?.call();
   }
 
   /// Reverse animates the provided tooltip or
@@ -601,7 +601,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
             shapeBorder: widget.targetShapeBorder,
             disableDefaultChildGestures: widget.disableDefaultTargetGestures,
           ),
-          ToolTipBaseWidget.resolve(
+          TooltipBaseWidget.resolve(
             position: position,
             offset: targetOffset,
             screenSize: screenSize,

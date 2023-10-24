@@ -29,12 +29,12 @@ import 'enum.dart';
 import 'get_position.dart';
 import 'measure_size.dart';
 
-const _kDefaultToolTipHeight = 120.0;
+const _kDefaultTooltipHeight = 120.0;
 const EdgeInsets _kDefaultDescriptionPadding = EdgeInsets.zero;
 
 typedef ArrowPainterBuilder = ArrowPainter Function(bool isArrowUp);
 
-abstract class ToolTipBaseWidget extends StatefulWidget {
+abstract class TooltipBaseWidget extends StatefulWidget {
   final GetPosition? position;
   final Offset offset;
   final Size screenSize;
@@ -51,7 +51,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
   final EdgeInsets horizontalPaddingFromParent;
   final TooltipPosition? tooltipPosition;
 
-  const ToolTipBaseWidget._({
+  const TooltipBaseWidget._({
     Key? key,
     this.position,
     required this.offset,
@@ -70,7 +70,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     this.tooltipPosition,
   }) : super(key: key);
 
-  const factory ToolTipBaseWidget({
+  const factory TooltipBaseWidget({
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -101,9 +101,9 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     required EdgeInsets descriptionPadding,
     TextDirection? titleTextDirection,
     TextDirection? descriptionTextDirection,
-  }) = _DefaultToolTipWidget;
+  }) = _DefaultTooltipWidget;
 
-  factory ToolTipBaseWidget.resolve({
+  factory TooltipBaseWidget.resolve({
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -141,7 +141,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     if (container != null) {
       assert(contentWidth != null);
 
-      return _CustomToolTipWidget(
+      return _CustomTooltipWidget(
         position: position,
         offset: offset,
         screenSize: screenSize,
@@ -150,7 +150,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
         arrowPainterBuilder: arrowPainterBuilder,
         container: container,
         horizontalPaddingFromParent: horizontalPaddingFromParent,
-        contentHeight: contentHeight ?? _kDefaultToolTipHeight,
+        contentHeight: contentHeight ?? _kDefaultTooltipHeight,
         contentWidth: contentWidth!,
         onTooltipTap: onTooltipTap,
         movingAnimationDuration: movingAnimationDuration,
@@ -165,7 +165,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
 
     assert(description != null);
 
-    return _DefaultToolTipWidget(
+    return _DefaultTooltipWidget(
       position: position,
       offset: offset,
       screenSize: screenSize,
@@ -199,7 +199,7 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     );
   }
 
-  const factory ToolTipBaseWidget.custom({
+  const factory TooltipBaseWidget.custom({
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -218,13 +218,13 @@ abstract class ToolTipBaseWidget extends StatefulWidget {
     required Curve scaleAnimationCurve,
     bool isTooltipDismissed,
     TooltipPosition? tooltipPosition,
-  }) = _CustomToolTipWidget;
+  }) = _CustomTooltipWidget;
 
   @override
-  State<ToolTipBaseWidget> createState();
+  State<TooltipBaseWidget> createState();
 }
 
-mixin _ToolTipMixin<T extends ToolTipBaseWidget> on State<T>, TickerProviderStateMixin<T> {
+mixin _TooltipMixin<T extends TooltipBaseWidget> on State<T>, TickerProviderStateMixin<T> {
   late final AnimationController _movingAnimationController;
   late final Animation<double> _movingAnimation;
   late final AnimationController _scaleAnimationController;
@@ -261,10 +261,10 @@ mixin _ToolTipMixin<T extends ToolTipBaseWidget> on State<T>, TickerProviderStat
   }
 
   double get tooltipWidth;
-  double get toolTipHeight => _kDefaultToolTipHeight;
+  double get tooltipHeight => _kDefaultTooltipHeight;
 
   TooltipPosition findPositionForContent(Offset position) {
-    final height = toolTipHeight;
+    final height = tooltipHeight;
 
     final positionHeight = widget.position?.getHeight() ?? 0;
     final calculatedPositionHeight = positionHeight / 2;
@@ -405,14 +405,14 @@ class _NullWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     throw FlutterError(
-      'Widgets that mix _ToolTipMixin into their State must '
+      'Widgets that mix _TooltipMixin into their State must '
       'call super.build() but must ignore the return value of the superclass.',
     );
   }
 }
 
-class _DefaultToolTipWidget extends ToolTipBaseWidget {
-  const _DefaultToolTipWidget({
+class _DefaultTooltipWidget extends TooltipBaseWidget {
+  const _DefaultTooltipWidget({
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -481,11 +481,11 @@ class _DefaultToolTipWidget extends ToolTipBaseWidget {
   final TextDirection? descriptionTextDirection;
 
   @override
-  State<_DefaultToolTipWidget> createState() => __DefaultToolTipWidgetState();
+  State<_DefaultTooltipWidget> createState() => __DefaultTooltipWidgetState();
 }
 
-class __DefaultToolTipWidgetState extends State<_DefaultToolTipWidget>
-    with TickerProviderStateMixin<_DefaultToolTipWidget>, _ToolTipMixin<_DefaultToolTipWidget> {
+class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
+    with TickerProviderStateMixin<_DefaultTooltipWidget>, _TooltipMixin<_DefaultTooltipWidget> {
   @override
   double tooltipWidth = 0;
 
@@ -502,7 +502,7 @@ class __DefaultToolTipWidgetState extends State<_DefaultToolTipWidget>
   }
 
   @override
-  void didUpdateWidget(_DefaultToolTipWidget oldWidget) {
+  void didUpdateWidget(_DefaultTooltipWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _getTooltipWidth();
   }
@@ -720,8 +720,8 @@ class __DefaultToolTipWidgetState extends State<_DefaultToolTipWidget>
   }
 }
 
-class _CustomToolTipWidget extends ToolTipBaseWidget {
-  const _CustomToolTipWidget({
+class _CustomTooltipWidget extends TooltipBaseWidget {
+  const _CustomTooltipWidget({
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -735,7 +735,7 @@ class _CustomToolTipWidget extends ToolTipBaseWidget {
       bottom: 10,
     ),
     required this.container,
-    this.contentHeight = _kDefaultToolTipHeight,
+    this.contentHeight = _kDefaultTooltipHeight,
     required this.contentWidth,
     VoidCallback? onTooltipTap,
     required Duration movingAnimationDuration,
@@ -769,16 +769,16 @@ class _CustomToolTipWidget extends ToolTipBaseWidget {
   final double contentWidth;
 
   @override
-  State<_CustomToolTipWidget> createState() => _CustomToolTipBaseWidgetState();
+  State<_CustomTooltipWidget> createState() => _CustomTooltipBaseWidgetState();
 }
 
-class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
-    with TickerProviderStateMixin<_CustomToolTipWidget>, _ToolTipMixin<_CustomToolTipWidget> {
+class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
+    with TickerProviderStateMixin<_CustomTooltipWidget>, _TooltipMixin<_CustomTooltipWidget> {
   @override
   late double tooltipWidth = widget.contentWidth;
 
   @override
-  late double toolTipHeight = widget.contentHeight;
+  late double tooltipHeight = widget.contentHeight;
 
   double _getHorizontalSpace() {
     var space = widget.position!.getCenter() - (tooltipWidth / 2);
@@ -802,7 +802,7 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
     var tempPos = position;
     tempPos = Offset(position!.dx, position!.dy + size!.height);
     tooltipWidth = size.width;
-    toolTipHeight = size.height;
+    tooltipHeight = size.height;
     setState(() => position = tempPos);
   }
 
