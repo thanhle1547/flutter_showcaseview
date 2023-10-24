@@ -4,6 +4,7 @@
 - Added support for changing the vertical margin of the arrow.
 - Added support of custom container margin.
 - Added support of custom the bounding box of the overlay that gets clipped.
+- Fixed platform's text scale factor changes break the UI.
 
 ## [2.0.4] (Un-Released)
 - Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).
