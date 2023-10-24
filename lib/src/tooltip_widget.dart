@@ -680,19 +680,20 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
         paddingBottom = bottomDelta;
       }
 
-      final textScaleFactor = MediaQuery.textScaleFactorOf(context);
-
       current = Padding(
         padding: EdgeInsets.only(
-          top: paddingTop * textScaleFactor,
-          bottom: paddingBottom * textScaleFactor,
+          top: paddingTop,
+          bottom: paddingBottom,
         ),
         child: current,
       );
     }
 
+    final contentYDelta =
+        isArrowUp ? widget.horizontalPaddingFromParent.top : -widget.horizontalPaddingFromParent.bottom;
+
     return Positioned(
-      top: contentY,
+      top: contentY + contentYDelta,
       left: left,
       right: _getRight(),
       child: ScaleTransition(
@@ -850,8 +851,6 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
       );
     }
 
-    final textScaleFactor = MediaQuery.textScaleFactorOf(context);
-
     return Positioned(
       left: _getHorizontalSpace(),
       top: _getVerticalSpace(contentY, isArrowUp),
@@ -868,8 +867,8 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
               onTap: widget.onTooltipTap,
               child: Container(
                 padding: EdgeInsets.only(
-                  top: isArrowUp ? paddingTop * textScaleFactor : 0,
-                  bottom: isArrowUp ? 0 : paddingBottom * textScaleFactor,
+                  top: isArrowUp ? paddingTop : 0,
+                  bottom: isArrowUp ? 0 : paddingBottom,
                 ),
                 color: Colors.transparent,
                 child: Center(
