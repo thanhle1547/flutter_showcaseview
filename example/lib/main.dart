@@ -184,6 +184,10 @@ class _MailPageState extends State<MailPage> {
                                       description: 'Tap ≡ to see menu options',
                                       disableDefaultTargetGestures: true,
                                       visibleBoundReference: _searchKey,
+                                      arrowVerticalMargin: EdgeInsets.only(
+                                        top: 22 * MediaQuery.textScaleFactorOf(context),
+                                        bottom: 27,
+                                      ),
                                       onBarrierClick: () => debugPrint('Barrier clicked'),
                                       child: GestureDetector(
                                         onTap: () => debugPrint('menu button clicked'),
