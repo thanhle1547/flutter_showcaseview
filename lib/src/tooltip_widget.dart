@@ -681,10 +681,12 @@ class __DefaultToolTipWidgetState extends State<_DefaultToolTipWidget>
         paddingBottom = bottomDelta;
       }
 
+      final textScaleFactor = MediaQuery.textScaleFactorOf(context);
+
       current = Padding(
         padding: EdgeInsets.only(
-          top: paddingTop,
-          bottom: paddingBottom,
+          top: paddingTop * textScaleFactor,
+          bottom: paddingBottom * textScaleFactor,
         ),
         child: current,
       );
@@ -849,6 +851,8 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
       );
     }
 
+    final textScaleFactor = MediaQuery.textScaleFactorOf(context);
+
     return Stack(
       clipBehavior: Clip.none,
       children: <Widget>[
@@ -868,8 +872,8 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
                   onTap: widget.onTooltipTap,
                   child: Container(
                     padding: EdgeInsets.only(
-                      top: isArrowUp ? paddingTop : 0,
-                      bottom: isArrowUp ? 0 : paddingBottom,
+                      top: isArrowUp ? paddingTop * textScaleFactor : 0,
+                      bottom: isArrowUp ? 0 : paddingBottom * textScaleFactor,
                     ),
                     color: Colors.transparent,
                     child: Center(

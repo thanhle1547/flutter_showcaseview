@@ -282,8 +282,7 @@ class Showcase extends StatefulWidget {
     this.disableMovingAnimation,
     this.disableScaleAnimation,
     this.horizontalPaddingFromParent = const EdgeInsets.symmetric(horizontal: 14),
-    this.tooltipPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.visibleBoundReference,
     this.targetPadding = EdgeInsets.zero,
@@ -309,12 +308,9 @@ class Showcase extends StatefulWidget {
             ? EdgeInsets.zero
             : arrowVerticalMargin ??
                 (showArrow ? const EdgeInsets.only(top: 22, bottom: 27) : const EdgeInsets.symmetric(vertical: 10)),
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-            "overlay opacity must be between 0 and 1."),
-        assert(onTargetClick == null || disposeOnTap != null,
-            "disposeOnTap is required if you're using onTargetClick"),
-        assert(disposeOnTap == null || onTargetClick != null,
-            "onTargetClick is required if you're using disposeOnTap");
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1."),
+        assert(onTargetClick == null || disposeOnTap != null, "disposeOnTap is required if you're using onTargetClick"),
+        assert(disposeOnTap == null || onTargetClick != null, "onTargetClick is required if you're using disposeOnTap");
 
   const Showcase.withWidget({
     required this.key,
@@ -338,8 +334,7 @@ class Showcase extends StatefulWidget {
     this.overlayColor = Colors.black45,
     this.targetBorderRadius,
     this.overlayOpacity = 0.75,
-    this.scrollLoadingWidget = const CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.white)),
+    this.scrollLoadingWidget = const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)),
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -372,14 +367,13 @@ class Showcase extends StatefulWidget {
         descriptionPadding = null,
         titleTextDirection = null,
         descriptionTextDirection = null,
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-            "overlay opacity must be between 0 and 1.");
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
 
   @override
   State<Showcase> createState() => _ShowcaseState();
 }
 
-class _ShowcaseState extends State<Showcase> {
+class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
   bool _showShowCase = false;
   bool _isScrollRunning = false;
   bool _isTooltipDismissed = false;
@@ -395,6 +389,7 @@ class _ShowcaseState extends State<Showcase> {
   void initState() {
     super.initState();
     initRootWidget();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   void initRootWidget() {
@@ -406,12 +401,9 @@ class _ShowcaseState extends State<Showcase> {
 
   void reCalculateRoot() {
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
-      final rootWidget =
-          context.findRootAncestorStateOfType<State<WidgetsApp>>();
+      final rootWidget = context.findRootAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject();
-      rootWidgetSize = rootWidget == null
-          ? MediaQuery.sizeOf(context)
-          : (rootRenderObject as RenderBox).size;
+      rootWidgetSize = rootWidget == null ? MediaQuery.sizeOf(context) : (rootRenderObject as RenderBox).size;
     });
   }
 
@@ -448,9 +440,7 @@ class _ShowcaseState extends State<Showcase> {
       }
 
       if (showCaseWidgetState.autoPlay) {
-        timer = Timer(
-            Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds),
-            _nextIfAny);
+        timer = Timer(Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds), _nextIfAny);
       }
     }
   }
@@ -465,6 +455,18 @@ class _ShowcaseState extends State<Showcase> {
       );
       setState(() => _isScrollRunning = false);
     });
+  }
+
+  @override
+  void didChangeTextScaleFactor() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
   }
 
   @override
@@ -567,11 +569,8 @@ class _ShowcaseState extends State<Showcase> {
             clipper: RRectClipper(
               area: _isScrollRunning ? Rect.zero : clipRectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
-              radius: _isScrollRunning
-                  ? BorderRadius.zero
-                  : widget.targetBorderRadius,
-              overlayPadding:
-                  _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
+              radius: _isScrollRunning ? BorderRadius.zero : widget.targetBorderRadius,
+              overlayPadding: _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
             ),
             child: blur != 0
                 ? BackdropFilter(
@@ -580,8 +579,7 @@ class _ShowcaseState extends State<Showcase> {
                       width: mediaQuerySize.width,
                       height: mediaQuerySize.height,
                       decoration: BoxDecoration(
-                        color: widget.overlayColor
-                            .withOpacity(widget.overlayOpacity),
+                        color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                       ),
                     ),
                   )
@@ -589,8 +587,7 @@ class _ShowcaseState extends State<Showcase> {
                     width: mediaQuerySize.width,
                     height: mediaQuerySize.height,
                     decoration: BoxDecoration(
-                      color: widget.overlayColor
-                          .withOpacity(widget.overlayOpacity),
+                      color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                     ),
                   ),
           ),
@@ -628,10 +625,8 @@ class _ShowcaseState extends State<Showcase> {
             contentWidth: widget.width,
             onTooltipTap: _getOnTooltipTap,
             tooltipPadding: widget.tooltipPadding,
-            disableMovingAnimation: widget.disableMovingAnimation ??
-                showCaseWidgetState.disableMovingAnimation,
-            disableScaleAnimation: widget.disableScaleAnimation ??
-                showCaseWidgetState.disableScaleAnimation,
+            disableMovingAnimation: widget.disableMovingAnimation ?? showCaseWidgetState.disableMovingAnimation,
+            disableScaleAnimation: widget.disableScaleAnimation ?? showCaseWidgetState.disableScaleAnimation,
             movingAnimationDuration: widget.movingAnimationDuration,
             tooltipBorderRadius: widget.tooltipBorderRadius,
             scaleAnimationDuration: widget.scaleAnimationDuration,
