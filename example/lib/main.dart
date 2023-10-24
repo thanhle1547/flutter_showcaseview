@@ -452,9 +452,10 @@ class MailTile extends StatelessWidget {
                         )
                       ],
                     ),
-                    horizontalPaddingFromParent: const EdgeInsets.only(
+                    alignedFromParent: const EdgeInsets.only(
                       left: 16,
                       top: -16,
+                      bottom: 40,
                     ),
                     child: const SAvatarExampleChild(),
                   )
