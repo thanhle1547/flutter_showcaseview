@@ -777,8 +777,17 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
     if (arrowPainter == null) {
       child = widget.container;
     } else {
-      final arrowLeftPosition = _getArrowLeft(arrowPainter.width);
-      final arrowRightPosition = arrowLeftPosition != null ? null : _getArrowRight(arrowPainter.width);
+      final double? arrowLeftPosition = _getArrowLeft(arrowPainter.width);
+      final double? arrowRightPosition = arrowLeftPosition != null ? null : _getArrowRight(arrowPainter.width);
+      final double? arrowTopPosition;
+      final double? arrowBottomPosition;
+      if (isArrowUp) {
+        arrowTopPosition = -arrowPainter.height;
+        arrowBottomPosition = null;
+      } else {
+        arrowTopPosition = null;
+        arrowBottomPosition = -arrowPainter.height;
+      }
 
       child = Stack(
         clipBehavior: Clip.none,
@@ -786,8 +795,8 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
           Positioned(
             left: arrowLeftPosition,
             right: arrowRightPosition,
-            top: isArrowUp ? -arrowPainter.height : null,
-            bottom: isArrowUp ? null : -arrowPainter.height,
+            top: arrowTopPosition,
+            bottom: arrowBottomPosition,
             child: CustomPaint(
               painter: arrowPainter,
               child: SizedBox(
