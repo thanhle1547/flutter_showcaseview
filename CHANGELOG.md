@@ -6,6 +6,8 @@
 - Added support of custom the bounding box of the overlay that gets clipped.
 - Fixed platform's text scale factor changes break the UI.
 - Fixed the incorrect position of the custom tooltip which was caused by using the `responsive_framework` package.
+**BREAKING CHANGE:**
+- Rename `Showcase.onToolTipClick` to `Showcase.onTooltipClick`
 
 ## [2.0.4] (Un-Released)
 - Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).
