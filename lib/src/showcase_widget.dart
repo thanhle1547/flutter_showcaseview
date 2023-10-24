@@ -125,6 +125,7 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   int? activeWidgetId;
   RenderObject? rootRenderObject;
   Size? rootWidgetSize;
+  late bool _isWidgetsAppHasBuilder;
   Key? anchoredOverlayKey;
 
   /// These properties are only here so that it can be accessed by
@@ -151,16 +152,35 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   @override
   void initState() {
     super.initState();
-    initRootWidget();
+    calculateRoot();
   }
 
-  void initRootWidget() {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    calculateRoot();
+  }
+
+  void calculateRoot() {
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
-      final rootWidget = context.findAncestorStateOfType<State<WidgetsApp>>();
+      State<StatefulWidget>? rootWidget;
+
+      final widgetsAppState = context.findAncestorStateOfType<State<WidgetsApp>>();
+      _isWidgetsAppHasBuilder = widgetsAppState?.widget.builder != null;
+
+      if (_isWidgetsAppHasBuilder) {
+        // Using the root [Navigator] as the [rootWidget]
+        // as if [WidgetsApp.builder] occurs to be non-null
+        // since we can get the wrong size if there is a package
+        // that makes the app responsive like the `responsive_framework`.
+        rootWidget = Navigator.maybeOf(context, rootNavigator: true);
+      } else {
+        rootWidget = widgetsAppState;
+      }
+
       rootRenderObject = rootWidget?.context.findRenderObject();
-      rootWidgetSize = rootWidget == null
-          ? MediaQuery.sizeOf(context)
-          : (rootRenderObject as RenderBox).size;
+      rootWidgetSize = rootWidget == null ? MediaQuery.sizeOf(context) : (rootRenderObject as RenderBox).size;
+
       anchoredOverlayKey = UniqueKey();
     });
   }

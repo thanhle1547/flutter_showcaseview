@@ -260,6 +260,7 @@ mixin _ToolTipMixin<T extends ToolTipBaseWidget> on State<T>, TickerProviderStat
     }
   }
 
+  double get tooltipWidth;
   double get toolTipHeight => _kDefaultToolTipHeight;
 
   TooltipPosition findPositionForContent(Offset position) {
@@ -280,8 +281,6 @@ mixin _ToolTipMixin<T extends ToolTipBaseWidget> on State<T>, TickerProviderStat
     final hasSpaceInBottom = (actualVisibleScreenHeight - bottomPosition) >= height;
     return (hasSpaceInTop && !hasSpaceInBottom ? TooltipPosition.top : TooltipPosition.bottom);
   }
-
-  double get tooltipWidth;
 
   double? _getLeft() {
     if (widget.position != null) {
@@ -782,10 +781,10 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
   late double toolTipHeight = widget.contentHeight;
 
   double _getHorizontalSpace() {
-    var space = widget.position!.getCenter() - (widget.contentWidth / 2);
-    if (space + widget.contentWidth > widget.screenSize.width) {
-      space = widget.screenSize.width - widget.contentWidth - widget.horizontalPaddingFromParent.right;
-    } else if (space < (widget.contentWidth / 2)) {
+    var space = widget.position!.getCenter() - (tooltipWidth / 2);
+    if (space + tooltipWidth > widget.screenSize.width) {
+      space = widget.screenSize.width - tooltipWidth - widget.horizontalPaddingFromParent.right;
+    } else if (space < (tooltipWidth / 2)) {
       space = widget.horizontalPaddingFromParent.left;
     }
     return space;
@@ -853,42 +852,37 @@ class _CustomToolTipBaseWidgetState extends State<_CustomToolTipWidget>
 
     final textScaleFactor = MediaQuery.textScaleFactorOf(context);
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        Positioned(
-          left: _getHorizontalSpace(),
-          top: _getVerticalSpace(contentY, isArrowUp),
-          child: FractionalTranslation(
-            translation: Offset(0.0, contentFractionalOffset),
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: Offset(0.0, contentFractionalOffset / 10),
-                end: !widget.showArrow && !isArrowUp ? const Offset(0.0, 0.0) : const Offset(0.0, 0.100),
-              ).animate(_movingAnimation),
-              child: Material(
+    return Positioned(
+      left: _getHorizontalSpace(),
+      top: _getVerticalSpace(contentY, isArrowUp),
+      child: FractionalTranslation(
+        translation: Offset(0.0, contentFractionalOffset),
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(0.0, contentFractionalOffset / 10),
+            end: !widget.showArrow && !isArrowUp ? const Offset(0.0, 0.0) : const Offset(0.0, 0.100),
+          ).animate(_movingAnimation),
+          child: Material(
+            color: Colors.transparent,
+            child: GestureDetector(
+              onTap: widget.onTooltipTap,
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: isArrowUp ? paddingTop * textScaleFactor : 0,
+                  bottom: isArrowUp ? 0 : paddingBottom * textScaleFactor,
+                ),
                 color: Colors.transparent,
-                child: GestureDetector(
-                  onTap: widget.onTooltipTap,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: isArrowUp ? paddingTop * textScaleFactor : 0,
-                      bottom: isArrowUp ? 0 : paddingBottom * textScaleFactor,
-                    ),
-                    color: Colors.transparent,
-                    child: Center(
-                      child: MeasureSize(
-                        onSizeChange: onSizeChange,
-                        child: child,
-                      ),
-                    ),
+                child: Center(
+                  child: MeasureSize(
+                    onSizeChange: onSizeChange,
+                    child: child,
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

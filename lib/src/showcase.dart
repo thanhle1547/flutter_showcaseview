@@ -394,17 +394,14 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
 
   void initRootWidget() {
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
-      rootWidgetSize = showCaseWidgetState.rootWidgetSize;
-      rootRenderObject = showCaseWidgetState.rootRenderObject;
+      _calculateRoot();
     });
   }
 
-  void reCalculateRoot() {
-    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
-      final rootWidget = context.findRootAncestorStateOfType<State<WidgetsApp>>();
-      rootRenderObject = rootWidget?.context.findRenderObject();
-      rootWidgetSize = rootWidget == null ? MediaQuery.sizeOf(context) : (rootRenderObject as RenderBox).size;
-    });
+  void _calculateRoot() {
+    final showCaseWidgetState = this.showCaseWidgetState;
+    rootWidgetSize = showCaseWidgetState.rootWidgetSize;
+    rootRenderObject = showCaseWidgetState.rootRenderObject;
   }
 
   @override
@@ -412,10 +409,10 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
     super.didChangeDependencies();
     _enableShowcase = showCaseWidgetState.enableShowcase;
 
-    reCalculateRoot();
+    _calculateRoot();
 
     if (_enableShowcase) {
-      final size = MediaQuery.sizeOf(context);
+      late final size = MediaQuery.sizeOf(context);
       position ??= GetPosition(
         rootRenderObject: rootRenderObject,
         key: widget.key,
