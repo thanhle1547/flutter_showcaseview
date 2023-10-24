@@ -48,7 +48,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
   final Duration scaleAnimationDuration;
   final Curve scaleAnimationCurve;
   final bool isTooltipDismissed;
-  final EdgeInsets horizontalPaddingFromParent;
+  final EdgeInsets alignedFromParent;
   final TooltipPosition? tooltipPosition;
 
   const TooltipBaseWidget._({
@@ -66,7 +66,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required this.scaleAnimationDuration,
     required this.scaleAnimationCurve,
     this.isTooltipDismissed = false,
-    required this.horizontalPaddingFromParent,
+    required this.alignedFromParent,
     this.tooltipPosition,
   }) : super(key: key);
 
@@ -82,7 +82,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     TextStyle? descTextStyle,
     Color? tooltipBackgroundColor,
     Color? textColor,
-    required EdgeInsets horizontalPaddingFromParent,
+    required EdgeInsets alignedFromParent,
     EdgeInsets? tooltipPadding,
     BorderRadius? tooltipBorderRadius,
     required bool showArrow,
@@ -121,7 +121,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     Widget? container,
     double? contentHeight,
     double? contentWidth,
-    required EdgeInsets horizontalPaddingFromParent,
+    required EdgeInsets alignedFromParent,
     EdgeInsets? tooltipPadding,
     BorderRadius? tooltipBorderRadius,
     VoidCallback? onTooltipTap,
@@ -149,7 +149,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
         arrowVerticalMargin: arrowVerticalMargin,
         arrowPainterBuilder: arrowPainterBuilder,
         container: container,
-        horizontalPaddingFromParent: horizontalPaddingFromParent,
+        alignedFromParent: alignedFromParent,
         contentHeight: contentHeight ?? _kDefaultTooltipHeight,
         contentWidth: contentWidth!,
         onTooltipTap: onTooltipTap,
@@ -177,7 +177,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
       descTextStyle: descTextStyle,
       tooltipBackgroundColor: tooltipBackgroundColor,
       textColor: textColor,
-      horizontalPaddingFromParent: horizontalPaddingFromParent,
+      alignedFromParent: alignedFromParent,
       tooltipPadding: tooltipPadding,
       tooltipBorderRadius: tooltipBorderRadius,
       showArrow: showArrow,
@@ -206,7 +206,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required bool showArrow,
     required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
-    required EdgeInsets horizontalPaddingFromParent,
+    required EdgeInsets alignedFromParent,
     required Widget container,
     double contentHeight,
     required double contentWidth,
@@ -288,8 +288,8 @@ mixin _TooltipMixin<T extends TooltipBaseWidget> on State<T>, TickerProviderStat
       double leftPositionValue = widget.position!.getCenter() - (width * 0.5);
       if ((leftPositionValue + width) > widget.screenSize.width) {
         return null;
-      } else if ((leftPositionValue) < widget.horizontalPaddingFromParent.left) {
-        return widget.horizontalPaddingFromParent.left;
+      } else if ((leftPositionValue) < widget.alignedFromParent.left) {
+        return widget.alignedFromParent.left;
       } else {
         return leftPositionValue;
       }
@@ -305,7 +305,7 @@ mixin _TooltipMixin<T extends TooltipBaseWidget> on State<T>, TickerProviderStat
       if (left == null || (left + width) > widget.screenSize.width) {
         final rightPosition = widget.position!.getCenter() + (width * 0.5);
 
-        return (rightPosition + width) > widget.screenSize.width ? widget.horizontalPaddingFromParent.right : null;
+        return (rightPosition + width) > widget.screenSize.width ? widget.alignedFromParent.right : null;
       } else {
         return null;
       }
@@ -424,7 +424,7 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
     this.descTextStyle,
     this.tooltipBackgroundColor,
     this.textColor,
-    required EdgeInsets horizontalPaddingFromParent,
+    required EdgeInsets alignedFromParent,
     this.tooltipPadding,
     this.tooltipBorderRadius,
     required bool showArrow,
@@ -449,7 +449,7 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
           screenSize: screenSize,
           showArrow: showArrow,
           arrowVerticalMargin: arrowVerticalMargin,
-          horizontalPaddingFromParent: horizontalPaddingFromParent,
+          alignedFromParent: alignedFromParent,
           arrowPainterBuilder: arrowPainterBuilder,
           onTooltipTap: onTooltipTap,
           movingAnimationDuration: movingAnimationDuration,
@@ -690,7 +690,7 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
     }
 
     final contentYDelta =
-        isArrowUp ? widget.horizontalPaddingFromParent.top : -widget.horizontalPaddingFromParent.bottom;
+        isArrowUp ? widget.alignedFromParent.top : -widget.alignedFromParent.bottom;
 
     return Positioned(
       top: contentY + contentYDelta,
@@ -729,7 +729,7 @@ class _CustomTooltipWidget extends TooltipBaseWidget {
     required bool showArrow,
     required EdgeInsets arrowVerticalMargin,
     ArrowPainterBuilder? arrowPainterBuilder,
-    EdgeInsets horizontalPaddingFromParent = const EdgeInsets.only(
+    EdgeInsets alignedFromParent = const EdgeInsets.only(
       left: 16,
       right: 8,
       top: 10,
@@ -753,7 +753,7 @@ class _CustomTooltipWidget extends TooltipBaseWidget {
           showArrow: showArrow,
           arrowVerticalMargin: arrowVerticalMargin,
           arrowPainterBuilder: arrowPainterBuilder,
-          horizontalPaddingFromParent: horizontalPaddingFromParent,
+          alignedFromParent: alignedFromParent,
           onTooltipTap: onTooltipTap,
           movingAnimationDuration: movingAnimationDuration,
           disableMovingAnimation: disableMovingAnimation,
@@ -784,18 +784,18 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
   double _getHorizontalSpace() {
     var space = widget.position!.getCenter() - (tooltipWidth / 2);
     if (space + tooltipWidth > widget.screenSize.width) {
-      space = widget.screenSize.width - tooltipWidth - widget.horizontalPaddingFromParent.right;
+      space = widget.screenSize.width - tooltipWidth - widget.alignedFromParent.right;
     } else if (space < (tooltipWidth / 2)) {
-      space = widget.horizontalPaddingFromParent.left;
+      space = widget.alignedFromParent.left;
     }
     return space;
   }
 
   double _getVerticalSpace(double contentY, bool isArrowUp) {
     if (isArrowUp) {
-      return contentY - widget.horizontalPaddingFromParent.top;
+      return contentY - widget.alignedFromParent.top;
     } else {
-      return contentY - widget.horizontalPaddingFromParent.bottom;
+      return contentY - widget.alignedFromParent.bottom;
     }
   }
 

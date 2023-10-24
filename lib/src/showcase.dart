@@ -86,7 +86,7 @@ class Showcase extends StatefulWidget {
   /// ```
   final EdgeInsets tooltipPadding;
 
-  final EdgeInsets horizontalPaddingFromParent;
+  final EdgeInsets alignedFromParent;
 
   /// Background color of overlay during showcase.
   ///
@@ -281,7 +281,7 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.horizontalPaddingFromParent = const EdgeInsets.symmetric(horizontal: 14),
+    this.alignedFromParent = const EdgeInsets.symmetric(horizontal: 14),
     this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onTooltipClick,
     this.visibleBoundReference,
@@ -317,7 +317,7 @@ class Showcase extends StatefulWidget {
     required this.height,
     required this.width,
     required this.container,
-    this.horizontalPaddingFromParent = const EdgeInsets.only(
+    this.alignedFromParent = const EdgeInsets.only(
       left: 16,
       right: 8,
       top: 10,
@@ -612,7 +612,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
             titleTextStyle: widget.titleTextStyle,
             descTextStyle: widget.descTextStyle,
             container: widget.container,
-            horizontalPaddingFromParent: widget.horizontalPaddingFromParent,
+            alignedFromParent: widget.alignedFromParent,
             arrowPainterBuilder: widget.arrowPainterBuilder,
             tooltipBackgroundColor: widget.tooltipBackgroundColor,
             textColor: widget.textColor,
