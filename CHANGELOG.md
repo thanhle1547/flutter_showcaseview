@@ -1,3 +1,6 @@
+## [2.2.0] (Un-Released)
+- Added support of add a widget to show over the top of the overlay and tooltip during showcase.
+
 ## [2.1.0] (Un-Released)
 - Added support of change/add arrow painter for both default and custom tooltip.
 - Added support for aligning of the tooltip from the parent (margin).
