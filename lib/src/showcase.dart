@@ -101,6 +101,13 @@ class Showcase extends StatefulWidget {
   /// Custom tooltip widget when [Showcase.withWidget] is used.
   final Widget? container;
 
+  /// The widget to show over the top of the overlay and tooltip.
+  ///
+  /// Typically a [Positioned] widget.
+  ///
+  /// It can be a button to dismiss the showcase.
+  final Widget? action;
+
   /// Defines background color for tooltip widget.
   ///
   /// Default to [Colors.white]
@@ -276,6 +283,7 @@ class Showcase extends StatefulWidget {
     this.showArrow = true,
     EdgeInsets? arrowVerticalMargin,
     this.arrowPainterBuilder,
+    this.action,
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -317,6 +325,7 @@ class Showcase extends StatefulWidget {
     required this.height,
     required this.width,
     required this.container,
+    this.action,
     this.alignedFromParent = const EdgeInsets.only(
       left: 16,
       right: 8,
@@ -636,6 +645,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
             titleTextDirection: widget.titleTextDirection,
             descriptionTextDirection: widget.descriptionTextDirection,
           ),
+          if (widget.action != null) widget.action!,
         ],
       ],
     );
