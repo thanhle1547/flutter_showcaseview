@@ -23,6 +23,7 @@
 import 'package:flutter/material.dart';
 
 import '../showcaseview.dart';
+import 'extension.dart';
 
 class ShowCaseWidget extends StatefulWidget {
   final Builder builder;
@@ -122,6 +123,10 @@ class ShowCaseWidget extends StatefulWidget {
 class ShowCaseWidgetState extends State<ShowCaseWidget> {
   List<GlobalKey>? ids;
   int? activeWidgetId;
+  RenderObject? rootRenderObject;
+  Size? rootWidgetSize;
+  late bool _isWidgetsAppHasBuilder;
+  Key? anchoredOverlayKey;
 
   /// These properties are only here so that it can be accessed by
   /// [Showcase]
@@ -143,6 +148,42 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
 
   /// Returns value of [ShowCaseWidget.blurValue]
   double get blurValue => widget.blurValue;
+
+  @override
+  void initState() {
+    super.initState();
+    calculateRoot();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    calculateRoot();
+  }
+
+  void calculateRoot() {
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
+      State<StatefulWidget>? rootWidget;
+
+      final widgetsAppState = context.findAncestorStateOfType<State<WidgetsApp>>();
+      _isWidgetsAppHasBuilder = widgetsAppState?.widget.builder != null;
+
+      if (_isWidgetsAppHasBuilder) {
+        // Using the root [Navigator] as the [rootWidget]
+        // as if [WidgetsApp.builder] occurs to be non-null
+        // since we can get the wrong size if there is a package
+        // that makes the app responsive like the `responsive_framework`.
+        rootWidget = Navigator.maybeOf(context, rootNavigator: true);
+      } else {
+        rootWidget = widgetsAppState;
+      }
+
+      rootRenderObject = rootWidget?.context.findRenderObject();
+      rootWidgetSize = rootWidget == null ? MediaQuery.sizeOf(context) : (rootRenderObject as RenderBox).size;
+
+      anchoredOverlayKey = UniqueKey();
+    });
+  }
 
   /// Starts Showcase view from the beginning of specified list of widget ids.
   /// If this function is used when showcase has been disabled then it will

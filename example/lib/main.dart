@@ -52,6 +52,7 @@ class MailPage extends StatefulWidget {
 }
 
 class _MailPageState extends State<MailPage> {
+  final GlobalKey _searchKey = GlobalKey();
   final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
   final GlobalKey _three = GlobalKey();
@@ -68,8 +69,7 @@ class _MailPageState extends State<MailPage> {
     //NOTE: remove ambiguate function if you are using
     //flutter version greater than 3.x and direct use WidgetsBinding.instance
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context)
-          .startShowCase([_one, _two, _three, _four, _five]),
+      (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]),
     );
     mails = [
       Mail(
@@ -161,9 +161,10 @@ class _MailPageState extends State<MailPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
+                      child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 8),
                         child: Container(
+                          key: _searchKey,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: const Color(0xffF9F9F9),
@@ -180,12 +181,16 @@ class _MailPageState extends State<MailPage> {
                                   children: <Widget>[
                                     Showcase(
                                       key: _one,
-                                      description: 'Tap to see menu options',
-                                      onBarrierClick: () =>
-                                          debugPrint('Barrier clicked'),
+                                      description: 'Tap ≡ to see menu options',
+                                      disableDefaultTargetGestures: true,
+                                      visibleBoundReference: _searchKey,
+                                      arrowVerticalMargin: EdgeInsets.only(
+                                        top: 22 * MediaQuery.textScaleFactorOf(context),
+                                        bottom: 27,
+                                      ),
+                                      onBarrierClick: () => debugPrint('Barrier clicked'),
                                       child: GestureDetector(
-                                        onTap: () =>
-                                            debugPrint('menu button clicked'),
+                                        onTap: () => debugPrint('menu button clicked'),
                                         child: Icon(
                                           Icons.menu,
                                           color: Theme.of(context).primaryColor,
@@ -280,6 +285,8 @@ class _MailPageState extends State<MailPage> {
         title: 'Compose Mail',
         description: 'Click here to compose mail',
         targetShapeBorder: const CircleBorder(),
+        disableMovingAnimation: true,
+        arrowVerticalMargin: const EdgeInsets.only(bottom: 9),
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
@@ -288,8 +295,7 @@ class _MailPageState extends State<MailPage> {
                * currently rendered so the showcased keys are available in the
                * render tree. */
               scrollController.jumpTo(0);
-              ShowCaseWidget.of(context)
-                  .startShowCase([_one, _two, _three, _four, _five]);
+              ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]);
             });
           },
           child: const Icon(
@@ -300,8 +306,8 @@ class _MailPageState extends State<MailPage> {
     );
   }
 
-  GestureDetector showcaseMailTile(GlobalKey<State<StatefulWidget>> key,
-      bool showCaseDetail, BuildContext context, Mail mail) {
+  GestureDetector showcaseMailTile(
+      GlobalKey<State<StatefulWidget>> key, bool showCaseDetail, BuildContext context, Mail mail) {
     return GestureDetector(
       onTap: () {
         Navigator.push<void>(
@@ -388,12 +394,7 @@ class Mail {
 }
 
 class MailTile extends StatelessWidget {
-  const MailTile(
-      {required this.mail,
-      this.showCaseDetail = false,
-      this.showCaseKey,
-      Key? key})
-      : super(key: key);
+  const MailTile({required this.mail, this.showCaseDetail = false, this.showCaseKey, Key? key}) : super(key: key);
   final bool showCaseDetail;
   final GlobalKey<State<StatefulWidget>>? showCaseKey;
   final Mail mail;
@@ -419,6 +420,8 @@ class MailTile extends StatelessWidget {
                     targetBorderRadius: const BorderRadius.all(
                       Radius.circular(150),
                     ),
+                    arrowVerticalMargin: const EdgeInsets.only(top: 10),
+                    arrowPainterBuilder: (_) => CustomArrowPainer(const Color(0xffFCD8DC)),
                     container: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -449,6 +452,11 @@ class MailTile extends StatelessWidget {
                         )
                       ],
                     ),
+                    alignedFromParent: const EdgeInsets.only(
+                      left: 16,
+                      top: -16,
+                      bottom: 40,
+                    ),
                     child: const SAvatarExampleChild(),
                   )
                 else
@@ -462,9 +470,7 @@ class MailTile extends StatelessWidget {
                         mail.sender,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontWeight: mail.isUnread
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight: mail.isUnread ? FontWeight.bold : FontWeight.normal,
                           fontSize: 17,
                         ),
                       ),
@@ -481,9 +487,7 @@ class MailTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          color: mail.isUnread
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
+                          color: mail.isUnread ? Theme.of(context).primaryColor : Colors.black,
                           fontSize: 15,
                         ),
                       ),
@@ -521,5 +525,27 @@ class MailTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CustomArrowPainer extends ArrowPainter {
+  CustomArrowPainer(Color strokeColor)
+      : super(
+          strokeColor: strokeColor,
+          strokeWidth: 24,
+          paintingStyle: PaintingStyle.fill,
+          isUpArrow: true,
+          width: 24,
+          height: 24,
+        );
+
+  @override
+  Path getTrianglePath(double x, double y) {
+    return Path()
+      ..moveTo(x * 0.5, y * 0.08333333)
+      ..lineTo(x * 0.7916667, y * 0.8750000)
+      ..lineTo(x * 0.5000000, y * 0.7083333)
+      ..lineTo(x * 0.2083333, y * 0.8750000)
+      ..lineTo(x * 0.5000000, y * 0.08333333);
   }
 }

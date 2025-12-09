@@ -63,6 +63,9 @@ class _DetailState extends State<Detail> {
                         ),
                       ),
                     ),
+                    arrowPainterBuilder: (isArrowUp) => CustomArrowPainer(
+                      isUpArrow: isArrowUp,
+                    ),
                   ),
                   const SizedBox(
                     height: 16,
@@ -84,8 +87,7 @@ class _DetailState extends State<Detail> {
                       children: [
                         TextSpan(text: 'Hi team,\n\n'),
                         TextSpan(
-                          text:
-                              'As some of you know, we’re moving to Slack for '
+                          text: 'As some of you know, we’re moving to Slack for '
                               'our internal team communications. Slack is a '
                               'messaging app where we can talk, share files, '
                               'and work together. It also connects with tools '
@@ -100,8 +102,7 @@ class _DetailState extends State<Detail> {
                           ),
                         ),
                         TextSpan(
-                          text:
-                              'We want to use the best communication tools to '
+                          text: 'We want to use the best communication tools to '
                               'make our lives easier and be more productive. '
                               'Having everything in one place will help us '
                               'work together better and faster, rather than '
@@ -121,4 +122,17 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
+}
+
+class CustomArrowPainer extends ArrowPainter {
+  CustomArrowPainer({
+    required bool isUpArrow,
+  }) : super(
+          strokeColor: Colors.white,
+          strokeWidth: 15,
+          paintingStyle: PaintingStyle.fill,
+          isUpArrow: isUpArrow,
+          width: 15,
+          height: 15,
+        );
 }

@@ -1,5 +1,24 @@
-## [2.0.4]
+## [2.2.1] (Un-Released)
 - Feature [#387](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/387) - Provided barrier click disable functionality for a particular showcase.
+
+## [2.2.0] (Un-Released)
+- Added support of add a widget to show over the top of the overlay and tooltip during showcase.
+
+## [2.1.0] (Un-Released)
+- Added support of change/add arrow painter for both default and custom tooltip.
+- Added support for aligning of the tooltip from the parent (margin).
+- Added support for changing the vertical margin of the arrow.
+- Added support of custom container margin.
+- Added support of custom the bounding box of the overlay that gets clipped.
+- Fixed platform's text scale factor changes break the UI.
+- Fixed the incorrect position of the custom tooltip which was caused by using the `responsive_framework` package.
+**BREAKING CHANGE:**
+- Rename `Showcase.onToolTipClick` to `Showcase.onTooltipClick`
+
+## [2.0.4] (Un-Released)
+- Fixed [#390](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/390) - Targeted widget focusing issue when we are applying size constraint on root widget(MaterialApp).
+- Fixed [#383](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/383) - Targeted widget focusing issue when we applying size constraint on root widget(MaterialApp).
+- Improved internal `findRenderObject` calls.
 
 ## [2.0.3]
 - Feature [#148](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/148) - Add feasibility to add `textDirection` of `title` and `description`.
@@ -86,7 +105,7 @@
 
 ## [1.0.0]
 
-- Fixed [#95](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/95) - Migrated to null safety.  
+- Fixed [#95](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/95) - Migrated to null safety.
 - Fixed [#74](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/74) - Long text description is hidden.
 - Fixed [#76](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/76) - Overlay is not displayed properly on web.
 - Fixed [#81](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/81) - Crash on hot reload.
