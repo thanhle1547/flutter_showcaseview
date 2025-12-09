@@ -1,3 +1,6 @@
+## [2.2.1] (Un-Released)
+- Feature [#387](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/387) - Provided barrier click disable functionality for a particular showcase.
+
 ## [2.2.0] (Un-Released)
 - Added support of add a widget to show over the top of the overlay and tooltip during showcase.
 
