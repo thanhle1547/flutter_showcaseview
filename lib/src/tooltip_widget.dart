@@ -23,6 +23,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'arrow_painter.dart';
 import 'enum.dart';
@@ -610,31 +611,36 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
                 padding: widget.tooltipPadding,
                 color: widget.tooltipBackgroundColor,
                 child: Column(
-                  crossAxisAlignment: widget.title != null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
                   children: <Widget>[
                     if (widget.title != null)
-                      Padding(
-                        padding: widget.titlePadding ?? EdgeInsets.zero,
+                      Align(
+                        alignment: widget.titleAlignment,
+                        child: Padding(
+                          padding: widget.titlePadding ?? EdgeInsets.zero,
+                          child: Text(
+                            widget.title!,
+                            textAlign: widget.titleTextAlign,
+                            textDirection: widget.titleTextDirection,
+                            style: widget.titleTextStyle ??
+                                _textTheme.titleLarge!.copyWith(
+                                  color: widget.textColor,
+                                ),
+                          ),
+                        ),
+                      ),
+                    Align(
+                      alignment: widget.descriptionAlignment,
+                      child: Padding(
+                        padding: widget.descriptionPadding,
                         child: Text(
-                          widget.title!,
-                          textAlign: widget.titleAlignment,
-                          textDirection: widget.titleTextDirection,
-                          style: widget.titleTextStyle ??
-                              _textTheme.titleLarge!.copyWith(
+                          widget.description,
+                          textAlign: widget.descriptionTextAlign,
+                          textDirection: widget.descriptionTextDirection,
+                          style: widget.descTextStyle ??
+                              _textTheme.titleSmall!.copyWith(
                                 color: widget.textColor,
                               ),
                         ),
-                      ),
-                    Padding(
-                      padding: widget.descriptionPadding,
-                      child: Text(
-                        widget.description,
-                        textAlign: widget.descriptionAlignment,
-                        textDirection: widget.descriptionTextDirection,
-                        style: widget.descTextStyle ??
-                            _textTheme.titleSmall!.copyWith(
-                              color: widget.textColor,
-                            ),
                       ),
                     ),
                   ],
