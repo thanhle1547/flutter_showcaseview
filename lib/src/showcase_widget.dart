@@ -111,6 +111,7 @@ class ShowCaseWidget extends StatefulWidget {
     this.onFinish,
     this.onStart,
     this.onComplete,
+    this.onDismiss,
     this.autoPlay = false,
     this.autoPlayDelay = const Duration(milliseconds: 2000),
     this.enableAutoPlayLock = false,
@@ -310,6 +311,14 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
 
   /// Dismiss entire showcase view
   void dismiss() {
+    // This will check if valid active widget id exist or not and based on that
+    // we will return the widget key with `onDismiss` callback or will return
+    // null value.
+    final idNotExist =
+        activeWidgetId == null || ids == null || ids!.length < activeWidgetId!;
+
+    widget.onDismiss?.call(idNotExist ? null : ids?[activeWidgetId!]);
+
     if (mounted) setState(_cleanupAfterSteps);
   }
 
