@@ -106,7 +106,7 @@ class Showcase extends StatefulWidget {
   /// Typically a [Positioned] widget.
   ///
   /// It can be a button to dismiss the showcase.
-  final Widget? action;
+  final Widget? floatingActionWidget;
 
   /// Defines background color for tooltip widget.
   ///
@@ -286,7 +286,7 @@ class Showcase extends StatefulWidget {
     this.showArrow = true,
     EdgeInsets? arrowVerticalMargin,
     this.arrowPainterBuilder,
-    this.action,
+    this.floatingActionWidget,
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -330,7 +330,7 @@ class Showcase extends StatefulWidget {
     required this.height,
     required this.width,
     required this.container,
-    this.action,
+    this.floatingActionWidget,
     this.alignedFromParent = const EdgeInsets.only(
       left: 16,
       right: 8,
@@ -569,6 +569,9 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
 
     if (!_showShowCase) return const Offstage();
 
+    final Widget? floatingActionWidget = widget.floatingActionWidget
+        ?? showCaseWidgetState.globalFloatingActionWidget?.call(context);
+
     return Stack(
       children: [
         GestureDetector(
@@ -653,7 +656,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
             titleTextDirection: widget.titleTextDirection,
             descriptionTextDirection: widget.descriptionTextDirection,
           ),
-          if (widget.action != null) widget.action!,
+          if (floatingActionWidget != null) floatingActionWidget,
         ],
       ],
     );

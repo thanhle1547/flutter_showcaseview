@@ -25,6 +25,10 @@ import 'package:flutter/material.dart';
 import '../showcaseview.dart';
 import 'extension.dart';
 
+typedef FloatingActionBuilderCallback = Widget Function(
+  BuildContext,
+);
+
 class ShowCaseWidget extends StatefulWidget {
   final Builder builder;
 
@@ -84,6 +88,17 @@ class ShowCaseWidget extends StatefulWidget {
   /// Enable/disable showcase globally. Enabled by default.
   final bool enableShowcase;
 
+  /// Custom static floating action widget to show a static widget anywhere
+  /// on the screen for all the showcase widget
+  /// Use this context to access showcaseWidget operation otherwise it will
+  /// throw error.
+  final FloatingActionBuilderCallback? globalFloatingActionWidget;
+
+  /// Hides [globalFloatingActionWidget] for the provided showcase widgets. Add key of
+  /// showcase in which [globalFloatingActionWidget] should be hidden this list.
+  /// Defaults to [].
+  final List<GlobalKey> hideFloatingActionWidgetForShowcase;
+
   const ShowCaseWidget({
     required this.builder,
     this.onFinish,
@@ -99,6 +114,8 @@ class ShowCaseWidget extends StatefulWidget {
     this.enableAutoScroll = false,
     this.disableBarrierInteraction = false,
     this.enableShowcase = true,
+    this.globalFloatingActionWidget,
+    this.hideFloatingActionWidgetForShowcase = const [],
   });
 
   static GlobalKey? activeTargetWidget(BuildContext context) {
@@ -146,8 +163,35 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
 
   bool get enableShowcase => widget.enableShowcase;
 
+  List<GlobalKey> get hiddenFloatingActionKeys =>
+      _hideFloatingWidgetKeys.keys.toList();
+
+  /// This Stores keys of showcase for which we will hide the
+  /// [globalFloatingActionWidget].
+  late final _hideFloatingWidgetKeys = {
+    for (final item in widget.hideFloatingActionWidgetForShowcase) item: true
+  };
+
   /// Returns value of [ShowCaseWidget.blurValue]
   double get blurValue => widget.blurValue;
+
+  /// Returns current active showcase key
+  GlobalKey? get getCurrentActiveShowcaseKey {
+    if (ids == null || activeWidgetId == null) return null;
+
+    if (activeWidgetId! < ids!.length && activeWidgetId! >= 0) {
+      return ids![activeWidgetId!];
+    } else {
+      return null;
+    }
+  }
+
+  /// Return a [widget.globalFloatingActionWidget] if not need to hide this for
+  /// current showcase.
+  FloatingActionBuilderCallback? get globalFloatingActionWidget =>
+      _hideFloatingWidgetKeys[getCurrentActiveShowcaseKey] ?? false
+          ? null
+          : widget.globalFloatingActionWidget;
 
   @override
   void initState() {
@@ -271,6 +315,15 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   void _cleanupAfterSteps() {
     ids = null;
     activeWidgetId = null;
+  }
+
+  /// Disables the [globalFloatingActionWidget] for the provided keys.
+  void hideFloatingActionWidgetForKeys(
+    List<GlobalKey> updatedList,
+  ) {
+    _hideFloatingWidgetKeys
+      ..clear()
+      ..addAll({for (final item in updatedList) item: true});
   }
 
   @override

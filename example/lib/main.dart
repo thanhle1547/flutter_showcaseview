@@ -6,6 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+/// Global key for the first showcase widget
+final GlobalKey _firstShowcaseWidget = GlobalKey();
+
+/// Global key for the last showcase widget
+final GlobalKey _lastShowcaseWidget = GlobalKey();
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -21,6 +27,27 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: ShowCaseWidget(
+          hideFloatingActionWidgetForShowcase: [_lastShowcaseWidget],
+          globalFloatingActionWidget: (showcaseContext) => Positioned(
+            left: 16,
+            bottom: 16,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: ShowCaseWidget.of(showcaseContext).dismiss,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xffEE5366),
+                ),
+                child: const Text(
+                  'Skip',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
           onStart: (index, key) {
             log('onStart: $index, $key');
           },
@@ -53,11 +80,9 @@ class MailPage extends StatefulWidget {
 
 class _MailPageState extends State<MailPage> {
   final GlobalKey _searchKey = GlobalKey();
-  final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
   final GlobalKey _three = GlobalKey();
   final GlobalKey _four = GlobalKey();
-  final GlobalKey _five = GlobalKey();
   List<Mail> mails = [];
 
   final scrollController = ScrollController();
@@ -69,7 +94,9 @@ class _MailPageState extends State<MailPage> {
     //NOTE: remove ambiguate function if you are using
     //flutter version greater than 3.x and direct use WidgetsBinding.instance
     ambiguate(WidgetsBinding.instance)?.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]),
+      (_) => ShowCaseWidget.of(context).startShowCase(
+        [_firstShowcaseWidget, _two, _three, _four, _lastShowcaseWidget],
+      ),
     );
     mails = [
       Mail(
@@ -180,7 +207,7 @@ class _MailPageState extends State<MailPage> {
                                 child: Row(
                                   children: <Widget>[
                                     Showcase(
-                                      key: _one,
+                                      key: _firstShowcaseWidget,
                                       description: 'Tap ≡ to see menu options',
                                       disableDefaultTargetGestures: true,
                                       visibleBoundReference: _searchKey,
@@ -188,7 +215,17 @@ class _MailPageState extends State<MailPage> {
                                         top: 22 * MediaQuery.textScaleFactorOf(context),
                                         bottom: 27,
                                       ),
-                                      onBarrierClick: () => debugPrint('Barrier clicked'),
+                                      onBarrierClick: () {
+                                        debugPrint('Barrier clicked');
+                                        debugPrint(
+                                          'Floating Action widget for first '
+                                          'showcase is now hidden',
+                                        );
+                                        ShowCaseWidget.of(context).hideFloatingActionWidgetForKeys([
+                                          _firstShowcaseWidget,
+                                          _lastShowcaseWidget
+                                        ]);
+                                      },
                                       child: GestureDetector(
                                         onTap: () => debugPrint('menu button clicked'),
                                         child: Icon(
@@ -229,6 +266,26 @@ class _MailPageState extends State<MailPage> {
                           "Tap to see profile which contains user's name, profile picture, mobile number and country",
                       tooltipBackgroundColor: Theme.of(context).primaryColor,
                       textColor: Colors.white,
+                      floatingActionWidget: Positioned(
+                        left: 16,
+                        bottom: 16,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffEE5366),
+                            ),
+                            onPressed: ShowCaseWidget.of(context).dismiss,
+                            child: const Text(
+                              'Close Showcase',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       targetShapeBorder: const CircleBorder(),
                       child: Container(
                         padding: const EdgeInsets.all(5),
@@ -281,7 +338,7 @@ class _MailPageState extends State<MailPage> {
         ),
       ),
       floatingActionButton: Showcase(
-        key: _five,
+        key: _lastShowcaseWidget,
         title: 'Compose Mail',
         description: 'Click here to compose mail',
         targetShapeBorder: const CircleBorder(),
@@ -295,7 +352,13 @@ class _MailPageState extends State<MailPage> {
                * currently rendered so the showcased keys are available in the
                * render tree. */
               scrollController.jumpTo(0);
-              ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four, _five]);
+              ShowCaseWidget.of(context).startShowCase([
+                _firstShowcaseWidget,
+                _two,
+                _three,
+                _four,
+                _lastShowcaseWidget,
+              ]);
             });
           },
           child: const Icon(
@@ -332,7 +395,7 @@ class _MailPageState extends State<MailPage> {
                 ),
               ).then((_) {
                 setState(() {
-                  ShowCaseWidget.of(context).startShowCase([_four, _five]);
+                  ShowCaseWidget.of(context).startShowCase([_four, _lastShowcaseWidget]);
                 });
               });
             },
