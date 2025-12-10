@@ -2,6 +2,7 @@
 - [BREAKING] Fixed [#457](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/457) titleAlignment property does not work
 - Fix [#489](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/489) - Fixed mounter issue inside the `_scrollIntoView` function
 - Feature [#500](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/500) - Added `onDismiss` callback in `ShowCaseWidget` which will trigger whenever `onDismiss` method is called
+- Fixed [#503](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/503) - Cursor not changing to click mode when it is hovering over the clickable widgets provided by this package.
 
 ## [3.0.0] (Un-Released)
 - Updated minimum support to dart sdk 2.18.0

@@ -667,7 +667,10 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
             arrowVerticalMargin: widget.arrowVerticalMargin,
             contentHeight: widget.height,
             contentWidth: widget.width,
-            onTooltipTap: _getOnTooltipTap,
+            onTooltipTap: 
+                widget.disposeOnTap == true || widget.onTooltipClick != null
+                    ? _getOnTooltipTap
+                    : null,
             tooltipPadding: widget.tooltipPadding,
             disableMovingAnimation: widget.disableMovingAnimation ?? showCaseWidgetState.disableMovingAnimation,
             disableScaleAnimation: widget.disableScaleAnimation ?? showCaseWidgetState.disableScaleAnimation,
@@ -722,7 +725,10 @@ class _TargetWidget extends StatelessWidget {
           ? AbsorbPointer(
               child: targetWidgetContent(),
             )
-          : targetWidgetContent(),
+          : MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: targetWidgetContent(),
+            ),
     );
   }
 
