@@ -1,8 +1,11 @@
 ## [2.2.1] (Un-Released)
 - Feature [#387](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/387) - Provided barrier click disable functionality for a particular showcase.
+- Feature [#395](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/395) - Rename `action` to `floatingActionWidget` to give a static fixed widget at any place on the screen.
+- Feature [#396](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/396): Added `globalFloatingActionWidget` and `hideFloatingActionWidgetForShowcase` for global
+  static fixed widget
 
 ## [2.2.0] (Un-Released)
-- Added support of add a widget to show over the top of the overlay and tooltip during showcase.
+- Feature [#395](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/395) - Added support of add a widget to show over the top of the overlay and tooltip during showcase.
 
 ## [2.1.0] (Un-Released)
 - Added support of change/add arrow painter for both default and custom tooltip.
