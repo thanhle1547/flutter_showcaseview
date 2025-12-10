@@ -29,7 +29,7 @@ typedef FloatingActionBuilderCallback = Widget Function(
 );
 
 class ShowCaseWidget extends StatefulWidget {
-  final Builder builder;
+  final WidgetBuilder builder;
 
   /// Triggered when all the showcases are completed.
   final VoidCallback? onFinish;
@@ -333,7 +333,9 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   Widget build(BuildContext context) {
     return _InheritedShowCaseView(
       activeWidgetIds: ids?.elementAt(activeWidgetId!),
-      child: widget.builder,
+      child: Builder(
+        builder: widget.builder,
+      ),
     );
   }
 }

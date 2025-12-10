@@ -6,6 +6,7 @@
 - Feature [#420](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/420) - Dart SDK Upgrade
 - Updated minimum support to dart sdk 2.18.0
 - Fixed [#449](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/449) - Null check operator used on a null value
+- [BREAKING] Improvement [#400](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/400) - remove Builder widget
 
 ## [2.2.0] (Un-Released)
 - Feature [#395](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/395) - Added support of add a widget to show over the top of the overlay and tooltip during showcase.
