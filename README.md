@@ -156,7 +156,8 @@ WidgetsBinding.instance.addPostFrameCallback((_) =>
 | disableMovingAnimation              | bool                                          | false                        | Disable bouncing/moving transition for all showcases                                             |
 | onStart                             | Function(int?, GlobalKey)?                    |                              | Triggered on start of each showcase.                                                                |
 | onComplete                          | Function(int?, GlobalKey)?                    |                              | Triggered on completion of each showcase.                                                           |
-| onFinish                            | VoidCallback?                                 |                              | Triggered when all the showcases are completed                                                  |
+| onFinish                            | VoidCallback?                                 |                              | Triggered when all the showcases are completed
+| onDismiss                           | OnDismissCallback?                           |                              | Triggered when onDismiss is called                                                           |
 | enableShowcase                      | bool                                          | true                         | Enable or disable showcase globally.                                                                |
 | globalFloatingActionWidget          | FloatingActionWidget Function(BuildContext)?  |                              | Global Config for tooltip action to auto apply for all the toolTip .                               |
 | hideFloatingActionWidgetForShowcase | List<GlobalKey>                               | []                           | Hides globalFloatingActionWidget for the provided showcase widget keys.        |

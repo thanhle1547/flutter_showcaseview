@@ -64,6 +64,9 @@ class MyApp extends StatelessWidget {
           blurValue: 1,
           builder: (context) => const MailPage(),
           autoPlayDelay: const Duration(seconds: 3),
+          onDismiss: (key) {
+            debugPrint('Dismissed at $key');
+          },
         ),
       ),
     );

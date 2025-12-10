@@ -25,7 +25,12 @@ import 'package:flutter/material.dart';
 import '../showcaseview.dart';
 
 typedef FloatingActionBuilderCallback = Widget Function(
-  BuildContext,
+  BuildContext context,
+);
+
+typedef OnDismissCallback = void Function(
+  /// this is the key on which showcase is dismissed
+  GlobalKey? dismissedAt,
 );
 
 class ShowCaseWidget extends StatefulWidget {
@@ -33,6 +38,9 @@ class ShowCaseWidget extends StatefulWidget {
 
   /// Triggered when all the showcases are completed.
   final VoidCallback? onFinish;
+
+  /// Triggered when onDismiss is called
+  final OnDismissCallback? onDismiss;
 
   /// Triggered every time on start of each showcase.
   final Function(int?, GlobalKey)? onStart;
