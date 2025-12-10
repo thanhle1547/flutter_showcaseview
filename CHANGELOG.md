@@ -3,6 +3,7 @@
 - Fix [#489](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/489) - Fixed mounter issue inside the `_scrollIntoView` function
 - Feature [#500](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/500) - Added `onDismiss` callback in `ShowCaseWidget` which will trigger whenever `onDismiss` method is called
 - Fixed [#503](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/503) - Cursor not changing to click mode when it is hovering over the clickable widgets provided by this package.
+- Feature [#113](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/113) - Multiple showcase at the same time. Added a parameter `linkedShowcaseKeys` in showcase which will take list of keys to start those showcase at the same time
 
 ## [3.0.0] (Un-Released)
 - Updated minimum support to dart sdk 2.18.0

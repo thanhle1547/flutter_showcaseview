@@ -210,6 +210,7 @@ WidgetsBinding.instance.addPostFrameCallback((_) =>
 | titleTextDirection           | TextDirection?      |                                   | Give textDirection to title                                                                             | ✅          |                   |
 | descriptionTextDirection     | TextDirection?      |                                   | Give textDirection to description                                                                             | ✅          |                   |
 | floatingActionWidget         | FloatingActionWidget       |                                                  | Provided a floating static action widget to show at any place on the screen                        | ✅          | ✅                |
+| linkedShowcaseKeys           | List<GlobalKey>            | []                                               | This is used to show multiple showcase at the same time with help of other `Showcase` keys         | ✅          | ✅                |
 
 ## How to use
 
