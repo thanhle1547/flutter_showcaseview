@@ -27,7 +27,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'enum.dart';
-import 'extension.dart';
 import 'get_position.dart';
 import 'layout_overlays.dart';
 import 'shape_clipper.dart';
@@ -409,7 +408,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
   }
 
   void initRootWidget() {
-    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateRoot();
     });
   }
@@ -459,7 +458,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
   }
 
   void _scrollIntoView() {
-    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       setState(() => _isScrollRunning = true);
       await Scrollable.ensureVisible(
         widget.key.currentContext!,
@@ -678,7 +677,6 @@ class _TargetWidget extends StatelessWidget {
   final bool disableDefaultChildGestures;
 
   const _TargetWidget({
-    Key? key,
     required this.offset,
     required this.size,
     required this.shapeBorder,
@@ -687,7 +685,7 @@ class _TargetWidget extends StatelessWidget {
     this.onDoubleTap,
     this.onLongPress,
     this.disableDefaultChildGestures = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -711,8 +709,8 @@ class _TargetWidget extends StatelessWidget {
       child: Container(
         //TODO: Add target padding in major version upgrade and
         // remove default 16 padding from this widget
-        height: size!.height + 16,
-        width: size!.width + 16,
+        height: size.height + 16,
+        width: size.width + 16,
         decoration: ShapeDecoration(
           shape: radius != null
               ? RoundedRectangleBorder(borderRadius: radius!)

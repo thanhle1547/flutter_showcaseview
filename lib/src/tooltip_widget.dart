@@ -52,7 +52,6 @@ abstract class TooltipBaseWidget extends StatefulWidget {
   final TooltipPosition? tooltipPosition;
 
   const TooltipBaseWidget._({
-    Key? key,
     this.position,
     required this.offset,
     required this.screenSize,
@@ -68,7 +67,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     this.isTooltipDismissed = false,
     required this.alignedFromParent,
     this.tooltipPosition,
-  }) : super(key: key);
+  });
 
   const factory TooltipBaseWidget({
     GetPosition? position,
@@ -413,9 +412,9 @@ class _NullWidget extends StatelessWidget {
 
 class _DefaultTooltipWidget extends TooltipBaseWidget {
   const _DefaultTooltipWidget({
-    GetPosition? position,
-    required Offset offset,
-    required Size screenSize,
+    super.position,
+    required super.offset,
+    required super.screenSize,
     this.title,
     this.titleAlignment,
     required this.description,
@@ -424,42 +423,26 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
     this.descTextStyle,
     this.tooltipBackgroundColor,
     this.textColor,
-    required EdgeInsets alignedFromParent,
+    required super.alignedFromParent,
     this.tooltipPadding,
     this.tooltipBorderRadius,
-    required bool showArrow,
-    required EdgeInsets arrowVerticalMargin,
-    ArrowPainterBuilder? arrowPainterBuilder,
-    VoidCallback? onTooltipTap,
-    required Duration movingAnimationDuration,
-    required bool disableMovingAnimation,
-    required bool disableScaleAnimation,
-    required Duration scaleAnimationDuration,
-    required Curve scaleAnimationCurve,
+    required super.showArrow,
+    required super.arrowVerticalMargin,
+    super.arrowPainterBuilder,
+    super.onTooltipTap,
+    required super.movingAnimationDuration,
+    required super.disableMovingAnimation,
+    required super.disableScaleAnimation,
+    required super.scaleAnimationDuration,
+    required super.scaleAnimationCurve,
     this.scaleAnimationAlignment,
-    bool isTooltipDismissed = false,
-    TooltipPosition? tooltipPosition,
+    super.isTooltipDismissed,
+    super.tooltipPosition,
     this.titlePadding,
     this.descriptionPadding = _kDefaultDescriptionPadding,
     this.titleTextDirection,
     this.descriptionTextDirection,
-  }) : super._(
-          position: position,
-          offset: offset,
-          screenSize: screenSize,
-          showArrow: showArrow,
-          arrowVerticalMargin: arrowVerticalMargin,
-          alignedFromParent: alignedFromParent,
-          arrowPainterBuilder: arrowPainterBuilder,
-          onTooltipTap: onTooltipTap,
-          movingAnimationDuration: movingAnimationDuration,
-          disableMovingAnimation: disableMovingAnimation,
-          disableScaleAnimation: disableScaleAnimation,
-          scaleAnimationDuration: scaleAnimationDuration,
-          scaleAnimationCurve: scaleAnimationCurve,
-          isTooltipDismissed: isTooltipDismissed,
-          tooltipPosition: tooltipPosition,
-        );
+  }) : super._();
 
   final String? title;
   final TextAlign? titleAlignment;
@@ -723,13 +706,13 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
 
 class _CustomTooltipWidget extends TooltipBaseWidget {
   const _CustomTooltipWidget({
-    GetPosition? position,
-    required Offset offset,
-    required Size screenSize,
-    required bool showArrow,
-    required EdgeInsets arrowVerticalMargin,
-    ArrowPainterBuilder? arrowPainterBuilder,
-    EdgeInsets alignedFromParent = const EdgeInsets.only(
+    super.position,
+    required super.offset,
+    required super.screenSize,
+    required super.showArrow,
+    required super.arrowVerticalMargin,
+    super.arrowPainterBuilder,
+    super.alignedFromParent = const EdgeInsets.only(
       left: 16,
       right: 8,
       top: 10,
@@ -738,31 +721,15 @@ class _CustomTooltipWidget extends TooltipBaseWidget {
     required this.container,
     this.contentHeight = _kDefaultTooltipHeight,
     required this.contentWidth,
-    VoidCallback? onTooltipTap,
-    required Duration movingAnimationDuration,
-    required bool disableMovingAnimation,
-    required bool disableScaleAnimation,
-    required Duration scaleAnimationDuration,
-    required Curve scaleAnimationCurve,
-    bool isTooltipDismissed = false,
-    TooltipPosition? tooltipPosition,
-  }) : super._(
-          position: position,
-          offset: offset,
-          screenSize: screenSize,
-          showArrow: showArrow,
-          arrowVerticalMargin: arrowVerticalMargin,
-          arrowPainterBuilder: arrowPainterBuilder,
-          alignedFromParent: alignedFromParent,
-          onTooltipTap: onTooltipTap,
-          movingAnimationDuration: movingAnimationDuration,
-          disableMovingAnimation: disableMovingAnimation,
-          disableScaleAnimation: disableScaleAnimation,
-          scaleAnimationDuration: scaleAnimationDuration,
-          scaleAnimationCurve: scaleAnimationCurve,
-          isTooltipDismissed: isTooltipDismissed,
-          tooltipPosition: tooltipPosition,
-        );
+    super.onTooltipTap,
+    required super.movingAnimationDuration,
+    required super.disableMovingAnimation,
+    required super.disableScaleAnimation,
+    required super.scaleAnimationDuration,
+    required super.scaleAnimationCurve,
+    super.isTooltipDismissed = false,
+    super.tooltipPosition,
+  }) : super._();
 
   final Widget container;
 
