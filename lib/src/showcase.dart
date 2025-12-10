@@ -549,6 +549,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
   /// Reverse animates the provided tooltip or
   /// the custom container widget.
   Future<void> _reverseAnimateTooltip() async {
+    if (!mounted) return;
     setState(() => _isTooltipDismissed = true);
     await Future<dynamic>.delayed(widget.scaleAnimationDuration);
     _isTooltipDismissed = false;
