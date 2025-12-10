@@ -501,6 +501,15 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
   void didUpdateWidget(_DefaultTooltipWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _getTooltipWidth();
+
+    // If tooltip is not dismissed and animation is dismissed or in reverse mode
+    // the we will start the animation this fixes the issue if 2 consecutive
+    // showcase of same showcase not working issue
+    if (!widget.isTooltipDismissed &&
+        (_scaleAnimationController.status == AnimationStatus.dismissed ||
+            _scaleAnimationController.status == AnimationStatus.reverse)) {
+      _scaleAnimationController.forward();
+    }
   }
 
   void _getTooltipWidth() {
@@ -770,6 +779,20 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
 
   @override
   late double tooltipHeight = widget.contentHeight;
+
+  @override
+  void didUpdateWidget(_CustomTooltipWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // If tooltip is not dismissed and animation is dismissed or in reverse mode
+    // the we will start the animation this fixes the issue if 2 consecutive
+    // showcase of same showcase not working issue
+    if (!widget.isTooltipDismissed &&
+        (_scaleAnimationController.status == AnimationStatus.dismissed ||
+            _scaleAnimationController.status == AnimationStatus.reverse)) {
+      _scaleAnimationController.forward();
+    }
+  }
 
   double _getHorizontalSpace() {
     var space = widget.position!.getCenter() - (tooltipWidth / 2);
