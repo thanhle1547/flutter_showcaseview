@@ -4,6 +4,7 @@
 - Feature [#396](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/396): Added `globalFloatingActionWidget` and `hideFloatingActionWidgetForShowcase` for global
   static fixed widget
 - Feature [#420](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/420) - Dart SDK Upgrade
+- Updated minimum support to dart sdk 2.18.0
 
 ## [2.2.0] (Un-Released)
 - Feature [#395](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/395) - Added support of add a widget to show over the top of the overlay and tooltip during showcase.

@@ -23,7 +23,6 @@
 import 'package:flutter/material.dart';
 
 import '../showcaseview.dart';
-import 'extension.dart';
 
 typedef FloatingActionBuilderCallback = Widget Function(
   BuildContext,
@@ -208,7 +207,7 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   }
 
   void calculateRoot() {
-    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       State<StatefulWidget>? rootWidget;
 
       final widgetsAppState = context.findAncestorStateOfType<State<WidgetsApp>>();
@@ -342,8 +341,8 @@ class _InheritedShowCaseView extends InheritedWidget {
 
   const _InheritedShowCaseView({
     required this.activeWidgetIds,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(_InheritedShowCaseView oldWidget) =>
