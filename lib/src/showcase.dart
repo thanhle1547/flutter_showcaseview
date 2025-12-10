@@ -513,6 +513,8 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
   }
 
   Future<void> _nextIfAny() async {
+    if (showCaseWidgetState.isShowCaseCompleted) return;
+
     if (timer != null && timer!.isActive) {
       if (showCaseWidgetState.enableAutoPlayLock) {
         return;
@@ -522,6 +524,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
       timer = null;
     }
     await _reverseAnimateTooltip();
+    if (showCaseWidgetState.isShowCaseCompleted) return;
     showCaseWidgetState.completed(widget.key);
   }
 
