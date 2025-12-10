@@ -208,6 +208,8 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
 
   void calculateRoot() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
       State<StatefulWidget>? rootWidget;
 
       final widgetsAppState = context.findAncestorStateOfType<State<WidgetsApp>>();
