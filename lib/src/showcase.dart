@@ -476,12 +476,16 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
 
   void _scrollIntoView() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final keyContext = widget.key.currentContext;
+      if (!mounted) return;
+      if (keyContext == null || !keyContext.mounted) return;
       setState(() => _isScrollRunning = true);
       await Scrollable.ensureVisible(
-        widget.key.currentContext!,
+        keyContext,
         duration: showCaseWidgetState.widget.scrollDuration,
         alignment: 0.5,
       );
+      if (!mounted) return;
       setState(() => _isScrollRunning = false);
     });
   }
