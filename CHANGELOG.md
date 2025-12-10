@@ -16,6 +16,7 @@
 - Added support of custom the bounding box of the overlay that gets clipped.
 - Fixed platform's text scale factor changes break the UI.
 - Fixed the incorrect position of the custom tooltip which was caused by using the `responsive_framework` package.
+- Fixed removed deprecated text style after Flutter 3.22 follow [migration guide](https://docs.flutter.dev/release/breaking-changes/3-19-deprecations#texttheme)
 **BREAKING CHANGE:**
 - Rename `Showcase.onToolTipClick` to `Showcase.onTooltipClick`
 
