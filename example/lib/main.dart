@@ -338,7 +338,7 @@ class _MailPageState extends State<MailPage> {
         key: _lastShowcaseWidget,
         title: 'Compose Mail',
         description: 'Click here to compose mail',
-        targetShapeBorder: const CircleBorder(),
+        targetBorderRadius: const BorderRadius.all(Radius.circular(16)),
         disableMovingAnimation: true,
         arrowVerticalMargin: const EdgeInsets.only(bottom: 9),
         child: FloatingActionButton(
