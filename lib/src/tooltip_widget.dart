@@ -604,46 +604,51 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
           ),
           child: ClipRRect(
             borderRadius: widget.tooltipBorderRadius ?? BorderRadius.circular(8.0),
-            child: GestureDetector(
-              onTap: widget.onTooltipTap,
-              child: Container(
-                width: tooltipWidth,
-                padding: widget.tooltipPadding,
-                color: widget.tooltipBackgroundColor,
-                child: Column(
-                  children: <Widget>[
-                    if (widget.title != null)
+            child: MouseRegion(
+              cursor: widget.onTooltipTap == null
+                  ? MouseCursor.defer
+                  : SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: widget.onTooltipTap,
+                child: Container(
+                  width: tooltipWidth,
+                  padding: widget.tooltipPadding,
+                  color: widget.tooltipBackgroundColor,
+                  child: Column(
+                    children: <Widget>[
+                      if (widget.title != null)
+                        Align(
+                          alignment: widget.titleAlignment,
+                          child: Padding(
+                            padding: widget.titlePadding ?? EdgeInsets.zero,
+                            child: Text(
+                              widget.title!,
+                              textAlign: widget.titleTextAlign,
+                              textDirection: widget.titleTextDirection,
+                              style: widget.titleTextStyle ??
+                                  _textTheme.titleLarge!.copyWith(
+                                    color: widget.textColor,
+                                  ),
+                            ),
+                          ),
+                        ),
                       Align(
-                        alignment: widget.titleAlignment,
+                        alignment: widget.descriptionAlignment,
                         child: Padding(
-                          padding: widget.titlePadding ?? EdgeInsets.zero,
+                          padding: widget.descriptionPadding,
                           child: Text(
-                            widget.title!,
-                            textAlign: widget.titleTextAlign,
-                            textDirection: widget.titleTextDirection,
-                            style: widget.titleTextStyle ??
-                                _textTheme.titleLarge!.copyWith(
+                            widget.description,
+                            textAlign: widget.descriptionTextAlign,
+                            textDirection: widget.descriptionTextDirection,
+                            style: widget.descTextStyle ??
+                                _textTheme.titleSmall!.copyWith(
                                   color: widget.textColor,
                                 ),
                           ),
                         ),
                       ),
-                    Align(
-                      alignment: widget.descriptionAlignment,
-                      child: Padding(
-                        padding: widget.descriptionPadding,
-                        child: Text(
-                          widget.description,
-                          textAlign: widget.descriptionTextAlign,
-                          textDirection: widget.descriptionTextDirection,
-                          style: widget.descTextStyle ??
-                              _textTheme.titleSmall!.copyWith(
-                                color: widget.textColor,
-                              ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -848,18 +853,23 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
           ).animate(_movingAnimation),
           child: Material(
             color: Colors.transparent,
-            child: GestureDetector(
-              onTap: widget.onTooltipTap,
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: isArrowUp ? paddingTop : 0,
-                  bottom: isArrowUp ? 0 : paddingBottom,
-                ),
-                color: Colors.transparent,
-                child: Center(
-                  child: MeasureSize(
-                    onSizeChange: onSizeChange,
-                    child: child,
+            child: MouseRegion(
+              cursor: widget.onTooltipTap == null
+                  ? MouseCursor.defer
+                  : SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: widget.onTooltipTap,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: isArrowUp ? paddingTop : 0,
+                    bottom: isArrowUp ? 0 : paddingBottom,
+                  ),
+                  color: Colors.transparent,
+                  child: Center(
+                    child: MeasureSize(
+                      onSizeChange: onSizeChange,
+                      child: child,
+                    ),
                   ),
                 ),
               ),
