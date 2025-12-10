@@ -409,6 +409,7 @@ class _ShowcaseState extends State<Showcase> with WidgetsBindingObserver {
 
   void initRootWidget() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _calculateRoot();
     });
   }
