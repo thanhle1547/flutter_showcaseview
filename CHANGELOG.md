@@ -1,5 +1,6 @@
 ## [4.0.0] (unreleased)
 - [BREAKING] Fixed [#457](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/issues/457) titleAlignment property does not work
+- Fix [#489](https://github.com/SimformSolutionsPvtLtd/flutter_showcaseview/pull/489) - Fixed mounter issue inside the `_scrollIntoView` function
 
 ## [3.0.0] (Un-Released)
 - Updated minimum support to dart sdk 2.18.0
