@@ -74,9 +74,11 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required Offset offset,
     required Size screenSize,
     String? title,
-    TextAlign? titleAlignment,
+    TextAlign? titleTextAlign,
+    required AlignmentGeometry titleAlignment,
     required String description,
-    TextAlign? descriptionAlignment,
+    TextAlign? descriptionTextAlign,
+    required AlignmentGeometry descriptionAlignment,
     TextStyle? titleTextStyle,
     TextStyle? descTextStyle,
     Color? tooltipBackgroundColor,
@@ -107,9 +109,11 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required Offset offset,
     required Size screenSize,
     String? title,
-    TextAlign? titleAlignment,
+    TextAlign? titleTextAlign,
+    AlignmentGeometry? titleAlignment,
     String? description,
-    TextAlign? descriptionAlignment,
+    TextAlign? descriptionTextAlign,
+    AlignmentGeometry? descriptionAlignment,
     TextStyle? titleTextStyle,
     TextStyle? descTextStyle,
     Color? tooltipBackgroundColor,
@@ -163,15 +167,19 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     }
 
     assert(description != null);
+    assert(titleAlignment != null);
+    assert(descriptionAlignment != null);
 
     return _DefaultTooltipWidget(
       position: position,
       offset: offset,
       screenSize: screenSize,
       title: title,
-      titleAlignment: titleAlignment,
+      titleTextAlign: titleTextAlign,
+      titleAlignment: titleAlignment!,
       description: description!,
-      descriptionAlignment: descriptionAlignment,
+      descriptionTextAlign: descriptionTextAlign,
+      descriptionAlignment: descriptionAlignment!,
       titleTextStyle: titleTextStyle,
       descTextStyle: descTextStyle,
       tooltipBackgroundColor: tooltipBackgroundColor,
@@ -416,9 +424,11 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
     required super.offset,
     required super.screenSize,
     this.title,
-    this.titleAlignment,
+    this.titleTextAlign,
+    required this.titleAlignment,
     required this.description,
-    this.descriptionAlignment,
+    this.descriptionTextAlign,
+    required this.descriptionAlignment,
     this.titleTextStyle,
     this.descTextStyle,
     this.tooltipBackgroundColor,
@@ -445,9 +455,11 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
   }) : super._();
 
   final String? title;
-  final TextAlign? titleAlignment;
+  final TextAlign? titleTextAlign;
+  final AlignmentGeometry titleAlignment;
   final String description;
-  final TextAlign? descriptionAlignment;
+  final TextAlign? descriptionTextAlign;
+  final AlignmentGeometry descriptionAlignment;
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
 
