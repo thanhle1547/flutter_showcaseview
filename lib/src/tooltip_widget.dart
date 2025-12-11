@@ -29,6 +29,7 @@ import 'arrow_painter.dart';
 import 'enum.dart';
 import 'get_position.dart';
 import 'measure_size.dart';
+import 'showcase/showcase_controller.dart';
 
 const _kDefaultTooltipHeight = 120.0;
 const EdgeInsets _kDefaultDescriptionPadding = EdgeInsets.zero;
@@ -48,11 +49,12 @@ abstract class TooltipBaseWidget extends StatefulWidget {
   final bool disableScaleAnimation;
   final Duration scaleAnimationDuration;
   final Curve scaleAnimationCurve;
-  final bool isTooltipDismissed;
   final EdgeInsets alignedFromParent;
   final TooltipPosition? tooltipPosition;
+  final ShowcaseController showcaseController;
 
   const TooltipBaseWidget._({
+    super.key,
     this.position,
     required this.offset,
     required this.screenSize,
@@ -65,12 +67,13 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required this.disableScaleAnimation,
     required this.scaleAnimationDuration,
     required this.scaleAnimationCurve,
-    this.isTooltipDismissed = false,
     required this.alignedFromParent,
     this.tooltipPosition,
+    required this.showcaseController,
   });
 
   const factory TooltipBaseWidget({
+    Key? key,
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -97,15 +100,16 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required Duration scaleAnimationDuration,
     required Curve scaleAnimationCurve,
     Alignment? scaleAnimationAlignment,
-    bool isTooltipDismissed,
     TooltipPosition? tooltipPosition,
     EdgeInsets? titlePadding,
     required EdgeInsets descriptionPadding,
     TextDirection? titleTextDirection,
     TextDirection? descriptionTextDirection,
+    required ShowcaseController showcaseController,
   }) = _DefaultTooltipWidget;
 
   factory TooltipBaseWidget.resolve({
+    Key? key,
     GetPosition? position,
     required Offset offset,
     required Size screenSize,
@@ -135,17 +139,18 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required Duration scaleAnimationDuration,
     required Curve scaleAnimationCurve,
     Alignment? scaleAnimationAlignment,
-    required bool isTooltipDismissed,
     TooltipPosition? tooltipPosition,
     EdgeInsets? titlePadding,
     EdgeInsets? descriptionPadding,
     TextDirection? titleTextDirection,
     TextDirection? descriptionTextDirection,
+    required ShowcaseController showcaseController,
   }) {
     if (container != null) {
       assert(contentWidth != null);
 
       return _CustomTooltipWidget(
+        key: key,
         position: position,
         offset: offset,
         screenSize: screenSize,
@@ -162,8 +167,8 @@ abstract class TooltipBaseWidget extends StatefulWidget {
         disableScaleAnimation: disableScaleAnimation,
         scaleAnimationDuration: scaleAnimationDuration,
         scaleAnimationCurve: scaleAnimationCurve,
-        isTooltipDismissed: isTooltipDismissed,
         tooltipPosition: tooltipPosition,
+        showcaseController: showcaseController,
       );
     }
 
@@ -172,6 +177,7 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     assert(descriptionAlignment != null);
 
     return _DefaultTooltipWidget(
+      key: key,
       position: position,
       offset: offset,
       screenSize: screenSize,
@@ -198,12 +204,12 @@ abstract class TooltipBaseWidget extends StatefulWidget {
       scaleAnimationDuration: scaleAnimationDuration,
       scaleAnimationCurve: scaleAnimationCurve,
       scaleAnimationAlignment: scaleAnimationAlignment,
-      isTooltipDismissed: isTooltipDismissed,
       tooltipPosition: tooltipPosition,
       titlePadding: titlePadding,
       descriptionPadding: descriptionPadding ?? _kDefaultDescriptionPadding,
       titleTextDirection: titleTextDirection,
       descriptionTextDirection: descriptionTextDirection,
+      showcaseController: showcaseController,
     );
   }
 
@@ -224,8 +230,8 @@ abstract class TooltipBaseWidget extends StatefulWidget {
     required bool disableScaleAnimation,
     required Duration scaleAnimationDuration,
     required Curve scaleAnimationCurve,
-    bool isTooltipDismissed,
     TooltipPosition? tooltipPosition,
+    required ShowcaseController showcaseController,
   }) = _CustomTooltipWidget;
 
   @override
@@ -361,6 +367,8 @@ mixin _TooltipMixin<T extends TooltipBaseWidget> on State<T>, TickerProviderStat
     if (!widget.disableMovingAnimation) {
       _movingAnimationController.forward();
     }
+    widget.showcaseController.reverseAnimationCallback =
+        widget.disableScaleAnimation ? null : _scaleAnimationController.reverse;
   }
 
   void movingAnimationListener() {
@@ -399,10 +407,6 @@ mixin _TooltipMixin<T extends TooltipBaseWidget> on State<T>, TickerProviderStat
   Widget build(BuildContext context) {
     _updateNumeral();
 
-    if (!widget.disableScaleAnimation && widget.isTooltipDismissed) {
-      _scaleAnimationController.reverse();
-    }
-
     return const _NullWidget();
   }
 }
@@ -421,6 +425,7 @@ class _NullWidget extends StatelessWidget {
 
 class _DefaultTooltipWidget extends TooltipBaseWidget {
   const _DefaultTooltipWidget({
+    super.key,
     super.position,
     required super.offset,
     required super.screenSize,
@@ -447,12 +452,12 @@ class _DefaultTooltipWidget extends TooltipBaseWidget {
     required super.scaleAnimationDuration,
     required super.scaleAnimationCurve,
     this.scaleAnimationAlignment,
-    super.isTooltipDismissed,
     super.tooltipPosition,
     this.titlePadding,
     this.descriptionPadding = _kDefaultDescriptionPadding,
     this.titleTextDirection,
     this.descriptionTextDirection,
+    required super.showcaseController,
   }) : super._();
 
   final String? title;
@@ -501,15 +506,6 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
   void didUpdateWidget(_DefaultTooltipWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _getTooltipWidth();
-
-    // If tooltip is not dismissed and animation is dismissed or in reverse mode
-    // the we will start the animation this fixes the issue if 2 consecutive
-    // showcase of same showcase not working issue
-    if (!widget.isTooltipDismissed &&
-        (_scaleAnimationController.status == AnimationStatus.dismissed ||
-            _scaleAnimationController.status == AnimationStatus.reverse)) {
-      _scaleAnimationController.forward();
-    }
   }
 
   void _getTooltipWidth() {
@@ -738,6 +734,7 @@ class __DefaultTooltipWidgetState extends State<_DefaultTooltipWidget>
 
 class _CustomTooltipWidget extends TooltipBaseWidget {
   const _CustomTooltipWidget({
+    super.key,
     super.position,
     required super.offset,
     required super.screenSize,
@@ -759,8 +756,8 @@ class _CustomTooltipWidget extends TooltipBaseWidget {
     required super.disableScaleAnimation,
     required super.scaleAnimationDuration,
     required super.scaleAnimationCurve,
-    super.isTooltipDismissed = false,
     super.tooltipPosition,
+    required super.showcaseController,
   }) : super._();
 
   final Widget container;
@@ -779,20 +776,6 @@ class _CustomTooltipBaseWidgetState extends State<_CustomTooltipWidget>
 
   @override
   late double tooltipHeight = widget.contentHeight;
-
-  @override
-  void didUpdateWidget(_CustomTooltipWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // If tooltip is not dismissed and animation is dismissed or in reverse mode
-    // the we will start the animation this fixes the issue if 2 consecutive
-    // showcase of same showcase not working issue
-    if (!widget.isTooltipDismissed &&
-        (_scaleAnimationController.status == AnimationStatus.dismissed ||
-            _scaleAnimationController.status == AnimationStatus.reverse)) {
-      _scaleAnimationController.forward();
-    }
-  }
 
   double _getHorizontalSpace() {
     var space = widget.position!.getCenter() - (tooltipWidth / 2);

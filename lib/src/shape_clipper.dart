@@ -22,24 +22,25 @@
 
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'models/linked_showcase_data.dart';
 
 class RRectClipper extends CustomClipper<ui.Path> {
+  RRectClipper({
+    this.isCircle = false,
+    this.overlayPadding = EdgeInsets.zero,
+    this.area = Rect.zero,
+    this.linkedObjectData = const <LinkedShowcaseDataModel>[],
+    this.radius,
+  });
+
   final bool isCircle;
   final BorderRadius? radius;
   final EdgeInsets overlayPadding;
   final Rect area;
   final List<LinkedShowcaseDataModel> linkedObjectData;
-
-  RRectClipper({
-    this.isCircle = false,
-    this.radius,
-    this.overlayPadding = EdgeInsets.zero,
-    this.area = Rect.zero,
-    this.linkedObjectData = const <LinkedShowcaseDataModel>[],
-  });
 
   @override
   ui.Path getClip(ui.Size size) {
@@ -105,5 +106,5 @@ class RRectClipper extends CustomClipper<ui.Path> {
       radius != oldClipper.radius ||
       overlayPadding != oldClipper.overlayPadding ||
       area != oldClipper.area ||
-      linkedObjectData != oldClipper.linkedObjectData;
+      !listEquals(linkedObjectData, oldClipper.linkedObjectData);
 }

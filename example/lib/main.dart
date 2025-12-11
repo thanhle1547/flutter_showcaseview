@@ -24,50 +24,59 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xffEE5366),
       ),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: ShowCaseWidget(
-          hideFloatingActionWidgetForShowcase: [_lastShowcaseWidget],
-          globalFloatingActionWidget: (showcaseContext) => Positioned(
-            left: 16,
-            bottom: 16,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: ShowCaseWidget.of(showcaseContext).dismiss,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffEE5366),
-                ),
-                child: const Text(
-                  'Skip',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ShowCaseWidget(
+        hideFloatingActionWidgetForShowcase: [_lastShowcaseWidget],
+        globalFloatingActionWidget: (showcaseContext) => Positioned(
+          left: 16,
+          bottom: 16,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: ShowCaseWidget.of(showcaseContext).dismiss,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xffEE5366),
+              ),
+              child: const Text(
+                'Skip',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
                 ),
               ),
             ),
           ),
-          onStart: (index, key) {
-            log('onStart: $index, $key');
-          },
-          onComplete: (index, key) {
-            log('onComplete: $index, $key');
-            if (index == 4) {
-              SystemChrome.setSystemUIOverlayStyle(
-                SystemUiOverlayStyle.light.copyWith(
-                  statusBarIconBrightness: Brightness.dark,
-                  statusBarColor: Colors.white,
-                ),
-              );
-            }
-          },
-          blurValue: 1,
-          builder: (context) => const MailPage(),
-          autoPlayDelay: const Duration(seconds: 3),
-          onDismiss: (key) {
-            debugPrint('Dismissed at $key');
-          },
         ),
+        onStart: (index, key) {
+          log('onStart: $index, $key');
+        },
+        onComplete: (index, key) {
+          log('onComplete: $index, $key');
+          if (index == 4) {
+            SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle.light.copyWith(
+                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: Colors.white,
+              ),
+            );
+          }
+        },
+        blurValue: 1,
+        builder: (context) => const MailPage(),
+        autoPlayDelay: const Duration(seconds: 3),
+        onDismiss: (key) {
+          debugPrint('Dismissed at $key');
+        },
       ),
     );
   }
@@ -398,7 +407,12 @@ class _MailPageState extends State<MailPage> {
                 ),
               ).then((_) {
                 setState(() {
-                  ShowCaseWidget.of(context).startShowCase([_four, _lastShowcaseWidget]);
+                  ShowCaseWidget.of(context).startShowCase(
+                    [_four, _lastShowcaseWidget],
+                    delay: const Duration(
+                      milliseconds: 200,
+                    ),
+                  );
                 });
               });
             },

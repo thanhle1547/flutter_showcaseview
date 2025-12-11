@@ -24,5 +24,5 @@ library showcaseview;
 
 export 'src/arrow_painter.dart';
 export 'src/enum.dart';
-export 'src/showcase.dart';
+export 'src/showcase/showcase.dart';
 export 'src/showcase_widget.dart';
